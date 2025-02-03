@@ -1,0 +1,36 @@
+@use 'normalin';
+
+:root {
+  --main-color: #5574f8;
+  --hover-underline-color: #0031b8;
+  --font: 'Montserrat', monospace;
+}
+
+@mixin font-face($font-name, $font-path) {
+  @font-face {
+    font-family: '#{$font-name}';
+    src: url('#{$font-path}.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+  }
+}
+
+$var-fonts: (
+  'Montserrat': './fonts/Montserrat-Regular',
+);
+
+@each $font-name, $font-path in $var-fonts {
+  @include font-face($font-name, $font-path);
+}
+
+body {
+  overflow-x: hidden;
+  font-size: 2rem;
+  min-height: 100vh;
+  font-family: var(--font);
+}
+
+main {
+  display: grid;
+  height: 100%;
+}
