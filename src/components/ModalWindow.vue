@@ -1,12 +1,17 @@
 <template>
   <div class="modal-wrap">
-    <button class="close-btn" @click="$emit('closeButtonTriggered')">x</button>
+    <div class="btn-wrap">
+      <span></span>
+      <button class="close-btn" @click="$emit('closeButtonTriggered')">x</button>
+    </div>
     <div class="modal-frame">
       <p class="modal-name">{{ props.name }}</p>
-      <p class="modal-sphere">{{ props.sphere }}</p>
-      <p class="modal-years">{{ props.years }}</p>
-      <p class="modal-link">{{ props.link }}</p>
-      <p class="modal-description">{{ props.description }}</p>
+      <p class="modal-card modal-card__sphere">{{ props.sphere }}</p>
+      <p class="modal-card modal-card__years">Запустился в {{ props.years }} году</p>
+      <a class="modal-card modal-card__link" v-bind:href="props.link" target="_blank"
+        >Перейти к проекту</a
+      >
+      <p class="modal-card modal-card__desc">{{ props.description }}</p>
     </div>
   </div>
 </template>
@@ -22,34 +27,84 @@ const props = defineProps({
 </script>
 
 <style scoped lang="scss">
-.modal-sphere {
-  font-size: 1em;
+.modal-card {
+  font-size: 0.59em;
   font-weight: lighter;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #5574f8;
+  border-radius: 0.3rem;
+  background-color: #d9d9d9;
+  padding: 0.5rem;
+  margin-top: 0;
+  color: black;
+
+  &__sphere {
+    margin-left: 3rem;
+    width: 41.6rem;
+    height: 1.5rem;
+  }
+
+  &__years {
+    text-align: center;
+    width: 14.4rem;
+    height: 1.5rem;
+  }
+
+  &__link {
+    transition: all 0.2s;
+    margin-right: 3rem;
+    width: 14rem;
+    height: 1.5rem;
+    text-align: center;
+    text-decoration: none;
+
+    &:hover {
+      background-color: #5574f8;
+      color: white;
+    }
+  }
+
+  &__desc {
+    margin-left: 3rem;
+    width: 77.7rem;
+    height: 9rem;
+    padding-bottom: 8rem;
+  }
 }
 .modal-name {
-  margin: 5rem 0 1rem 3rem;
+  padding: 4rem 0 0 3rem;
   font-size: 1.5em;
   font-weight: lighter;
+  height: 4rem;
+  width: 100%;
 }
 .modal-frame {
-  margin-top: 10%;
-  margin-left: 15%;
-  width: 70%;
-  height: 60%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 5rem;
+  margin-left: 15.8rem;
+  width: 85rem;
+  height: 40rem;
+  row-gap: 0px;
   background-color: #ffffff;
-  border-radius: 5px;
+  border-radius: 0.5rem;
 }
 .close-btn {
-  position: absolute;
   width: 1.5em;
   height: 1.5em;
-  left: 96%;
-  top: 3%;
+  margin-top: 0.5em;
+  margin-right: 0.5em;
   text-align: center;
   font-size: 2rem;
   border-width: 0;
-  border-radius: 3px;
+  border-radius: 0.1em;
   cursor: pointer;
+}
+.btn-wrap {
+  display: flex;
+  justify-content: space-between;
 }
 .modal-wrap {
   top: 0;

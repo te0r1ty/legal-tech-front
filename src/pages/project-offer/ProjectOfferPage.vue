@@ -85,6 +85,20 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+const req = new XMLHttpRequest()
+req.open('GET', 'http://130.193.51.137:8080/categories')
+req.responseType = 'json'
+req.setRequestHeader('Authorization', 'Basic ' + btoa('holger:QU11OWIz'))
+req.onload = () => {
+  for (let index = 0; index < req.response.length; index++) {
+    console.log(req.response[index])
+  }
+}
+req.onerror = () => {
+  console.log('ашибка')
+}
+req.send()
+
 const selectSphereMenu = [
   { id: 0, val: '', name: 'Очистить выбор' },
   { id: 1, val: 'sph1', name: 'Сфера 1' },

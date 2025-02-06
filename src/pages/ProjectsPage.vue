@@ -33,34 +33,40 @@ import ModalWindow from '@/components/ModalWindow.vue'
 import ProjectCard from '@/components/ProjectCard.vue'
 import { ref } from 'vue'
 
+interface prj {
+  id: number
+  name: string
+  sphere: string
+  years: number
+  link: string
+  description: string
+}
+
+const projects = ref<prj[]>([])
 const req = new XMLHttpRequest()
-req.open('GET', 'http://83.242.179.110:8080/companies')
+req.open('GET', 'http://130.193.51.137:8080/companies')
 req.responseType = 'json'
-req.setRequestHeader('Authorization', 'Basic' + btoa('holger:QU11OWIz'))
+req.setRequestHeader('Authorization', 'Basic ' + btoa('holger:QU11OWIz'))
 req.onload = () => {
   console.log(req.response)
+  for (let index = 0; index < req.response.length; index++) {
+    projects.value.push({
+      id: index,
+      name: req.response[index].name,
+      sphere: req.response[index].category.name,
+      years: req.response[index].yearOfLaunch,
+      link: req.response[index].linkToProject,
+      description: req.response[index].description,
+    })
+  }
+  console.log(projects.value)
 }
 req.onerror = () => {
   console.log('ашибка')
 }
 req.send()
 
-const projects = [
-  { id: 1, name: 'name1', sphere: '1111', years: 1111, link: '1111', description: '1111' },
-  { id: 2, name: 'name2', sphere: '2222', years: 2222, link: '2222', description: '2222' },
-  {
-    id: 3,
-    name: 'Юридическая операционная система (ЮОС)',
-    sphere: '3333',
-    years: 3333,
-    link: '3333',
-    description: '3333',
-  },
-  { id: 4, name: 'name4', sphere: '4444', years: 4444, link: '4444', description: '4444' },
-  { id: 5, name: 'name5', sphere: '5555', years: 5555, link: '5555', description: '5555' },
-  { id: 6, name: 'name6', sphere: '6666', years: 6666, link: '6666', description: '6666' },
-  { id: 7, name: 'name7', sphere: '7777', years: 7777, link: '7777', description: '7777' },
-]
+console.log(projects)
 
 const modalVisible = ref(false)
 const msgForModal = ref({
@@ -72,7 +78,7 @@ const msgForModal = ref({
 })
 
 function showModal(id: number) {
-  const infoPackForModal = projects[id - 1]
+  const infoPackForModal = projects.value[id]
   msgForModal.value = {
     name: infoPackForModal.name,
     sphere: infoPackForModal.sphere,
