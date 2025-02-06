@@ -33,7 +33,9 @@
       <div class="form__block">
         <p class="form__name">Сфера Legaltech-проекта</p>
         <select class="form__input form__select" v-model="form.sphere">
-          <option v-for="opt in selectMenu" :key="opt.id" :value="opt.val">{{ opt.name }}</option>
+          <option v-for="opt in selectSphereMenu" :key="opt.id" :value="opt.val">
+            {{ opt.name }}
+          </option>
         </select>
         <transition name="fade" appear>
           <p v-if="errors.sphere" class="error sphere-error">
@@ -43,7 +45,7 @@
       </div>
 
       <div class="form__block margin-submit">
-        <p class="form__name">Сколько лет Legaltech-проект на рынке</p>
+        <p class="form__name">Год запуска проекта</p>
         <input class="form__input" />
       </div>
 
@@ -83,7 +85,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-const selectMenu = [
+const selectSphereMenu = [
   { id: 0, val: '', name: 'Очистить выбор' },
   { id: 1, val: 'sph1', name: 'Сфера 1' },
   { id: 2, val: 'sph2', name: 'Сфера 2' },
@@ -95,25 +97,14 @@ const selectMenu = [
   { id: 4, val: 'sph4', name: 'Сфера 4' },
   { id: 1, val: 'sph1', name: 'Сфера 1' },
   { id: 2, val: 'sph2', name: 'Сфера 2' },
-  { id: 3, val: 'sph3', name: 'Сфера 3' },
-  { id: 1, val: 'sph1', name: 'Сфера 1' },
-  { id: 2, val: 'sph2', name: 'Сфера 2' },
-  { id: 3, val: 'sph3', name: 'Сфера 3' },
-  { id: 4, val: 'sph4', name: 'Сфера 4' },
-  { id: 1, val: 'sph1', name: 'Сфера 1' },
-  { id: 2, val: 'sph2', name: 'Сфера 2' },
-  { id: 3, val: 'sph3', name: 'Сфера 3' },
-  { id: 4, val: 'sph4', name: 'Сфера 4' },
-  { id: 1, val: 'sph1', name: 'Сфера 1' },
-  { id: 2, val: 'sph2', name: 'Сфера 2' },
-  { id: 3, val: 'sph3', name: 'Сфера 3' },
-  { id: 4, val: 'sph4', name: 'Сфера 4' },
-  { id: 4, val: 'sph4', name: 'Сфера 4' },
-  { id: 1, val: 'sph1', name: 'Сфера 1' },
-  { id: 2, val: 'sph2', name: 'Сфера 2' },
-  { id: 3, val: 'sph3', name: 'Сфера 3' },
-  { id: 4, val: 'sph4', name: 'Сфера 4' },
 ]
+
+const selectYearMenu = []
+const todaysYear = new Date().getFullYear()
+for (let minYear = 1950; minYear <= todaysYear; minYear++) {
+  selectYearMenu.push({ id: minYear - 1950, val: minYear, name: `${minYear}` })
+}
+selectYearMenu.reverse()
 
 const router = useRouter()
 

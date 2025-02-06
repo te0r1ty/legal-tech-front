@@ -7,11 +7,13 @@
 
 <script setup lang="ts">
 const props = defineProps({
+  id: Number,
   name: String,
 })
+const emits = defineEmits(['msgForModal'])
 
 function clicked() {
-  console.log(props.name)
+  emits('msgForModal', props.id)
 }
 </script>
 
