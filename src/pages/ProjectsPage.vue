@@ -48,7 +48,6 @@ req.open('GET', 'http://130.193.51.137:8080/companies')
 req.responseType = 'json'
 req.setRequestHeader('Authorization', 'Basic ' + btoa('holger:QU11OWIz'))
 req.onload = () => {
-  console.log(req.response)
   for (let index = 0; index < req.response.length; index++) {
     projects.value.push({
       id: index,
@@ -59,7 +58,6 @@ req.onload = () => {
       description: req.response[index].description,
     })
   }
-  console.log(projects.value)
 }
 req.onerror = () => {
   console.log('ашибка')

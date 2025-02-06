@@ -33,7 +33,7 @@
       <div class="form__block">
         <p class="form__name">Сфера Legaltech-проекта</p>
         <select class="form__input form__select" v-model="form.sphere">
-          <option v-for="opt in selectSphereMenu" :key="opt.id" :value="opt.val">
+          <option v-for="opt in selectSphereMenu" :key="opt.id" :value="opt.id">
             {{ opt.name }}
           </option>
         </select>
@@ -46,7 +46,16 @@
 
       <div class="form__block margin-submit">
         <p class="form__name">Год запуска проекта</p>
-        <input class="form__input" />
+        <select class="form__input form__select" v-model="form.year">
+          <option v-for="opt in selectYearMenu" :key="opt.id" :value="opt.year">
+            {{ opt.year }}
+          </option>
+        </select>
+        <transition name="fade" appear>
+          <p v-if="errors.year" class="error">
+            {{ errors.year }}
+          </p>
+        </transition>
       </div>
 
       <div class="form__block">
@@ -85,13 +94,24 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+interface selectSphereMenuRow {
+  id: number
+  name: string
+}
+interface selectYearMenuRow {
+  id: number
+  year: number
+}
+
+const selectSphereMenu = ref<selectSphereMenuRow[]>([])
+selectSphereMenu.value.push({ id: 0, name: 'Очистить выбор' })
 const req = new XMLHttpRequest()
 req.open('GET', 'http://130.193.51.137:8080/categories')
 req.responseType = 'json'
 req.setRequestHeader('Authorization', 'Basic ' + btoa('holger:QU11OWIz'))
 req.onload = () => {
   for (let index = 0; index < req.response.length; index++) {
-    console.log(req.response[index])
+    selectSphereMenu.value.push({ id: index + 1, name: req.response[index].name })
   }
 }
 req.onerror = () => {
@@ -99,26 +119,12 @@ req.onerror = () => {
 }
 req.send()
 
-const selectSphereMenu = [
-  { id: 0, val: '', name: 'Очистить выбор' },
-  { id: 1, val: 'sph1', name: 'Сфера 1' },
-  { id: 2, val: 'sph2', name: 'Сфера 2' },
-  { id: 3, val: 'sph3', name: 'Сфера 3' },
-  { id: 4, val: 'sph4', name: 'Сфера 4' },
-  { id: 1, val: 'sph1', name: 'Сфера 1' },
-  { id: 2, val: 'sph2', name: 'Сфера 2' },
-  { id: 3, val: 'sph3', name: 'Сфера 3' },
-  { id: 4, val: 'sph4', name: 'Сфера 4' },
-  { id: 1, val: 'sph1', name: 'Сфера 1' },
-  { id: 2, val: 'sph2', name: 'Сфера 2' },
-]
-
-const selectYearMenu = []
+const selectYearMenu = ref<selectYearMenuRow[]>([])
 const todaysYear = new Date().getFullYear()
 for (let minYear = 1950; minYear <= todaysYear; minYear++) {
-  selectYearMenu.push({ id: minYear - 1950, val: minYear, name: `${minYear}` })
+  selectYearMenu.value.push({ id: minYear - 1949, year: minYear })
 }
-selectYearMenu.reverse()
+selectYearMenu.value.reverse()
 
 const router = useRouter()
 
@@ -128,6 +134,7 @@ const form = ref({
   link: '',
   extras: '',
   sphere: '',
+  year: 0,
   editProject: false,
 })
 
@@ -137,6 +144,7 @@ const errors = ref({
   link: '',
   extras: '',
   sphere: '',
+  year: 0,
 })
 
 const validateForm = (): boolean => {
@@ -148,6 +156,7 @@ const validateForm = (): boolean => {
     link: '',
     extras: '',
     sphere: '',
+    year: 0,
   }
 
   if (!form.value.projectName) {
@@ -179,6 +188,8 @@ const submit = (event: Event) => {
     event.preventDefault()
     return
   }
+
+  console.log(form.value)
 
   router.push('/offer/success')
 }
