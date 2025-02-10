@@ -9,7 +9,7 @@ export const NAV_LINKS: readonly HeaderLink[] = [
     link: '/',
   },
   {
-    label: 'МЕТОДОЛГИЯ',
+    label: 'МЕТОДОЛОГИЯ',
     link: '/methods',
   },
   {
