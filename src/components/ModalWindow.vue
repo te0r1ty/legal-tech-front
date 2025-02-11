@@ -38,30 +38,57 @@ const props = defineProps({
   padding: 0.5rem;
   margin-top: 0;
   color: black;
+  position: relative;
 
   &__sphere {
     margin-left: 3rem;
+    top: -0.7rem;
     width: 41.6rem;
     height: 1.5rem;
+
+    &::before {
+      content: 'Сфера проекта';
+      position: absolute;
+      top: -35px;
+      left: 0;
+      font-size: 1.2em;
+    }
   }
 
   &__years {
     text-align: center;
+    top: -0.7rem;
     width: 14.4rem;
     height: 1.5rem;
+
+    &::before {
+      content: 'Год запуска';
+      position: absolute;
+      top: -35px;
+      left: 0;
+      font-size: 1.2em;
+    }
   }
 
   &__link {
     transition: all 0.2s;
+    top: -0.7rem;
     margin-right: 3rem;
     width: 14rem;
     height: 1.5rem;
     text-align: center;
     text-decoration: none;
 
+    &::before {
+      content: 'Ссылка на проект';
+      position: absolute;
+      top: -35px;
+      left: 0;
+      font-size: 1.2em;
+    }
+
     &:hover {
       background-color: #5574f8;
-      color: white;
     }
   }
 
@@ -70,14 +97,24 @@ const props = defineProps({
     width: 77.7rem;
     height: 9rem;
     padding-bottom: 8rem;
+
+    &::before {
+      content: 'Описание проекта';
+      position: absolute;
+      top: -35px;
+      left: 0;
+      font-size: 1.2em;
+    }
   }
 }
 .modal-name {
-  padding: 4rem 0 0 3rem;
+  padding: 3rem 0 0 3rem;
   font-size: 1.5em;
   font-weight: lighter;
   height: 4rem;
   width: 100%;
+  position: relative;
+  top: -1rem;
 }
 .modal-frame {
   display: flex;

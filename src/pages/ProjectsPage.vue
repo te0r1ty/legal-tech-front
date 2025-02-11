@@ -43,6 +43,7 @@ interface prj {
 }
 
 const projects = ref<prj[]>([])
+
 const req = new XMLHttpRequest()
 req.open('GET', 'http://130.193.51.137:8080/companies')
 req.responseType = 'json'
@@ -61,6 +62,16 @@ req.onload = () => {
 }
 req.onerror = () => {
   console.log('ашибка')
+  for (let index = 0; index < 7; index++) {
+    projects.value.push({
+      id: index,
+      name: `Имя ${index}`,
+      sphere: `сфера ${index}`,
+      years: index,
+      link: `ссылка ${index}`,
+      description: `описание ${index}`,
+    })
+  }
 }
 req.send()
 
