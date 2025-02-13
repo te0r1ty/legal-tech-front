@@ -70,6 +70,7 @@ const props = defineProps({
     }
   }
 
+  //TODO Сделать укороченную ссылку
   &__link {
     transition: all 0.2s;
     top: -0.7rem;
