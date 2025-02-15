@@ -15,6 +15,18 @@
       stroke-width="10"
       fill="none"
       ref="mapLines"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <circle
+      v-for="(station, index) in stations"
+      :key="'station-' + index"
+      :cx="station.x"
+      :cy="station.y"
+      r="8"
+      fill="white"
+      stroke="black"
+      stroke-width="2"
     />
     <defs>
       <clipPath id="clip0_321_307">
@@ -44,7 +56,7 @@ MAP_LINES.forEach((line) => {
 })
 
 const stations = ref<Station[]>([])
-const stationCount = ref<number>(10)
+const stationCount = ref<number>(6)
 const mapLines = ref<SVGPathElement[]>([])
 
 const calculateStations = () => {
