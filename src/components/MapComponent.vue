@@ -33,6 +33,7 @@
       :key="'text-' + index"
       :x="station.x + 13"
       :y="station.y - 5"
+      :transform="`rotate(${-10} ${station.x} ${station.y})`"
       :class="{
         'projcet-name__not-hovered': hoveredStationIndex === null,
         'project-name__hovered': hoveredStationIndex === index,
@@ -111,7 +112,7 @@ watch(stationCount, () => {
 
 <style scoped lang="scss">
 .project-name {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
   fill: black;
   paint-order: stroke;
@@ -130,7 +131,6 @@ watch(stationCount, () => {
   &__hovered {
     font-size: 18px;
     transform: translate(5px, 10px);
-    z-index: 9999;
   }
   &__hovered-another {
     opacity: 0.1;

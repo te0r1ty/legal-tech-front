@@ -50,6 +50,7 @@ const offer_link = '/offer'
 <style scoped lang="scss">
 .map {
   position: relative;
+  top: 4%;
   left: 50%;
   translate: -50%;
 }
