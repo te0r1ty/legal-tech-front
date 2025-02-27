@@ -146,7 +146,10 @@ const offer_link = '/offer'
 }
 
 .add-palceholder {
-  margin: 120px 8.3%;
+  position: relative;
+  left: 50%;
+  translate: -50%;
+  margin: 120px 0%;
   width: 83.4%;
   height: 375px;
   border-radius: 8px;

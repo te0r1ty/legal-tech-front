@@ -1,41 +1,73 @@
 <template>
   <footer class="footer-wrap">
     <div class="contacts-wrap">
-      <img class="vk-link" src="@/assets/pictures/vk-logo.svg" alt="VK_LINK_IMG" />
+      <p class="disclaimer">
+        Вся информация на сайте о проектах предоставлена вендорами проектов. При этом
+        предоставленная информация на сайте является справочно-информационными материалами и не
+        является рекламой или публичной офертой.
+      </p>
       <img class="logo" src="@/assets/pictures/logo.svg" alt="LT_LOGO_SVG" />
-      <p class="mail txt">info@legaltechmap.ru</p>
+      <img class="vk-link" src="@/assets/pictures/vk-logo.svg" alt="VK_LINK_IMG" />
+      <p class="mail">info@legaltechmap.ru</p>
     </div>
-    <p class="copyright txt">Copyright © 2024 Карта российского LegalTech</p>
+    <p class="copyright">Copyright © 2024 Карта российского LegalTech</p>
   </footer>
 </template>
 
 <script setup lang="ts"></script>
 
 <style scoped lang="scss">
-.txt {
+.disclaimer {
+  position: absolute;
+  left: 4%;
+  width: 24rem;
   color: white;
-  font-size: 20px;
+  font-size: 1rem;
+  margin: 0;
 }
 .footer-wrap {
-  margin-top: 120px;
+  width: 100%;
+  height: 250px;
   background-color: black;
 }
 .contacts-wrap {
-  display: flex;
-}
-.vk-link {
-  margin: 72px 39.6% 0 8.3%;
+  position: relative;
+  margin-top: 3rem;
 }
 .logo {
-  margin-top: 64px;
-  margin-right: 28%;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  translate: -50%;
+  height: fit-content;
+  width: 1.6em;
+}
+.vk-link {
+  position: absolute;
+  top: 31px;
+  right: 4%;
+  height: fit-content;
+  width: 1.3em;
 }
 .mail {
-  margin: 76px 8.3% 0 0;
-  width: 225px;
-  height: 23px;
+  position: absolute;
+  width: fit-content;
+  height: 1.2rem;
+  top: 40px;
+  right: 13%;
+  color: white;
+  font-size: 1.2rem;
+  margin: 0;
 }
 .copyright {
-  margin: 40px 36.7% 20px 36.7%;
+  width: fit-content;
+  position: relative;
+  top: 60%;
+  left: 50%;
+  translate: -50%;
+  height: 1.2rem;
+  color: white;
+  font-size: 1.2rem;
+  margin: 0;
 }
 </style>

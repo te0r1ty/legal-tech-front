@@ -33,7 +33,7 @@
       :key="'text-' + index"
       :x="station.x + 13"
       :y="station.y - 5"
-      :transform="`rotate(${-10} ${station.x} ${station.y})`"
+      :transform="`rotate(${0} ${station.x} ${station.y})`"
       :class="{
         'projcet-name__not-hovered': hoveredStationIndex === null,
         'project-name__hovered': hoveredStationIndex === index,
@@ -71,7 +71,7 @@ MAP_LINES.forEach((line) => {
 })
 
 const stations = ref<Station[]>([])
-const stationCount = ref<number>(6)
+const stationCount = ref<number>(4)
 const mapLines = ref<SVGPathElement[]>([])
 const hoveredStationIndex = ref<number | null>(null)
 
@@ -123,13 +123,15 @@ watch(stationCount, () => {
   transition:
     font-size 0.2s 0.3s,
     transform 0.2s 0.3s,
-    opacity 0.2s 0.3s;
+    opacity 0.2s 0.3s,
+    stroke-width 0.2s 0.3s;
 
   &__not-hovered {
     opacity: 1;
   }
   &__hovered {
     font-size: 18px;
+    stroke-width: 7;
     transform: translate(5px, 10px);
   }
   &__hovered-another {

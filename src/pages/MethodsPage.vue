@@ -119,6 +119,7 @@
 
 <style scoped lang="scss">
 .column-maker {
+  position: relative;
   display: flex;
   justify-content: space-between;
   margin-top: 120px;
@@ -135,9 +136,12 @@
   margin: 20px 0 0 0;
 }
 .methods-head2-alt {
+  position: sticky;
+  top: 4%;
   margin: 0;
   font-weight: normal;
   max-width: 49%;
+  height: fit-content;
   font-size: 60px;
 }
 .methods-head2 {
