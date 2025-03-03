@@ -1,6 +1,10 @@
 <template>
   <div class="card-wrap" @click="clicked">
-    <img class="prj-img" src="@/assets/pictures/заплатка.png" alt="project image" />
+    <img
+      class="prj-img"
+      :src="props.img == '' ? 'src/assets/pictures/заплатка.png' : props.img"
+      alt="project image"
+    />
     <p class="prj-name">{{ props.name }}</p>
   </div>
 </template>
@@ -9,6 +13,7 @@
 const props = defineProps({
   id: Number,
   name: String,
+  img: String,
 })
 const emits = defineEmits(['msgForModal'])
 

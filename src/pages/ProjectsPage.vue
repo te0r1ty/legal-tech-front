@@ -23,6 +23,7 @@
         :key="project.id"
         :id="project.id"
         :name="project.name"
+        :img="project.imgurl"
       />
     </div>
   </div>
@@ -40,12 +41,14 @@ interface prj {
   years: number
   link: string
   description: string
+  additional: string
+  imgurl: string
 }
 
 const projects = ref<prj[]>([])
 
 const req = new XMLHttpRequest()
-req.open('GET', 'http://130.193.51.137:8080/companies')
+req.open('GET', 'http://51.250.89.121:8080/companies')
 req.responseType = 'json'
 req.setRequestHeader('Authorization', 'Basic ' + btoa('holger:QU11OWIz'))
 req.onload = () => {
@@ -57,6 +60,8 @@ req.onload = () => {
       years: req.response[index].yearOfLaunch,
       link: req.response[index].linkToProject,
       description: req.response[index].description,
+      additional: req.response[index].chtoto,
+      imgurl: req.response[index].chtoto,
     })
   }
 }
@@ -70,6 +75,8 @@ req.onerror = () => {
       years: index,
       link: `ссылка ${index}`,
       description: `описание ${index}`,
+      additional: `доп инфа ${index}`,
+      imgurl: '@/assets/pictures/заплатка.png',
     })
   }
 }
