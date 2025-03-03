@@ -23,7 +23,7 @@
         :key="project.id"
         :id="project.id"
         :name="project.name"
-        :img="project.imgurl"
+        :img="`http://62.84.115.34:80/img-cloning/${project.imgurl}`"
       />
     </div>
   </div>
@@ -48,7 +48,7 @@ interface prj {
 const projects = ref<prj[]>([])
 
 const req = new XMLHttpRequest()
-req.open('GET', 'http://51.250.89.121:8080/companies')
+req.open('GET', 'http://62.84.115.34:8080/companies')
 req.responseType = 'json'
 req.setRequestHeader('Authorization', 'Basic ' + btoa('holger:QU11OWIz'))
 req.onload = () => {
@@ -61,7 +61,7 @@ req.onload = () => {
       link: req.response[index].linkToProject,
       description: req.response[index].description,
       additional: req.response[index].chtoto,
-      imgurl: req.response[index].chtoto,
+      imgurl: req.response[index].imagePath,
     })
   }
 }
@@ -123,7 +123,7 @@ function closeModal() {
 .list-wrap {
   display: flex;
   flex-wrap: wrap;
-  column-gap: 30px;
+  column-gap: 29px;
   row-gap: 20px;
 }
 .projects-head1 {

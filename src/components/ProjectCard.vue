@@ -28,15 +28,28 @@ function clicked() {
   margin: 0;
   text-align: center;
   font-size: 18px;
+  margin-bottom: 20px;
 }
 .prj-img {
-  width: 300px;
-  height: 300px;
+  position: relative;
+  top: 45%;
+  left: 50%;
+  translate: -50% -45%;
+  width: 250px;
+  height: fit-content;
   border-radius: 8px;
-  margin: 10px 30px;
 }
 .card-wrap {
-  transition: box-shadow 0.2s;
+  border: solid;
+  border-width: 3px;
+  border-color: #5574f830;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  transition:
+    box-shadow 0.2s,
+    border-color 0.2s;
   width: 360px;
   height: 360px;
   border-radius: 8px;
@@ -44,6 +57,7 @@ function clicked() {
 
   &:hover {
     box-shadow: 0px 0px 20px 0px #0031b8;
+    border-color: #5574f8;
   }
 }
 </style>
