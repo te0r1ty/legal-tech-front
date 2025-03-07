@@ -2,6 +2,7 @@
   <div class="projects-wrap">
     <transition name="fade" appear>
       <ModalWindow
+        class="modal"
         @close-button-triggered="closeModal"
         v-if="modalVisible"
         :name="msgForModal.name"
@@ -12,14 +13,19 @@
       />
     </transition>
     <h1 class="projects-head1">ПРОЕКТЫ</h1>
-
-    <div class="sort-settings-wrap">
-      <p class="sort-settings-wrap__txt">ВСЕГО ПРОЕКТОВ: {{ projects.length }}</p>
+    <p class="prj-count">ВСЕГО ПРОЕКТОВ: {{ projects.length }}</p>
+    <div class="settings-wrap">
+      <p class="settings-wrap__txt">ВЫБРАНО ПРОЕКТОВ: {{ showingProjects.length }}</p>
+      <select class="filter" v-model="chosenFilter">
+        <option class="opt" v-for="opt in selectSphereMenu" :key="opt.id" :value="opt.id">
+          {{ opt.name }}
+        </option>
+      </select>
     </div>
     <div class="list-wrap">
       <ProjectCard
         @msg-for-modal="showModal"
-        v-for="project in projects"
+        v-for="project in showingProjects"
         :key="project.id"
         :id="project.id"
         :name="project.name"
@@ -32,7 +38,35 @@
 <script setup lang="ts">
 import ModalWindow from '@/components/ModalWindow.vue'
 import ProjectCard from '@/components/ProjectCard.vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+
+interface selectSphereMenuRow {
+  id: number
+  name: string
+}
+
+const selectSphereMenu = ref<selectSphereMenuRow[]>([])
+
+const fetchCategories = async () => {
+  try {
+    const response = await fetch('http://62.84.115.34:8080/categories', {
+      headers: {
+        Authorization: 'Basic ' + btoa('holger:QU11OWIz'),
+      },
+    })
+    if (!response.ok) {
+      throw new Error('Failed to fetch categories')
+    }
+    const data = await response.json()
+    selectSphereMenu.value.push({ id: 0, name: 'Все категории' })
+    data.forEach((category: { name: string }, index: number) => {
+      selectSphereMenu.value.push({ id: index + 1, name: category.name })
+    })
+    console.log(selectSphereMenu.value)
+  } catch (error) {
+    console.error('Error fetching categories:', error)
+  }
+}
 
 interface prj {
   id: number
@@ -45,45 +79,71 @@ interface prj {
   imgurl: string
 }
 
-const projects = ref<prj[]>([])
+interface prjServerResponse {
+  id: number
+  name: string
+  category: { name: string }
+  yearOfLaunch: number
+  linkToProject: string
+  description: string
+  chtoto: string
+  imagePath: string
+}
 
-const req = new XMLHttpRequest()
-req.open('GET', 'http://62.84.115.34:8080/companies')
-req.responseType = 'json'
-req.setRequestHeader('Authorization', 'Basic ' + btoa('holger:QU11OWIz'))
-req.onload = () => {
-  for (let index = 0; index < req.response.length; index++) {
-    projects.value.push({
-      id: index,
-      name: req.response[index].name,
-      sphere: req.response[index].category.name,
-      years: req.response[index].yearOfLaunch,
-      link: req.response[index].linkToProject,
-      description: req.response[index].description,
-      additional: req.response[index].chtoto,
-      imgurl: req.response[index].imagePath,
+const projects: prj[] = []
+const showingProjects = ref<prj[]>([])
+
+const fetchProjects = async () => {
+  try {
+    const response = await fetch('http://62.84.115.34:8080/companies', {
+      headers: {
+        Authorization: 'Basic ' + btoa('holger:QU11OWIz'),
+      },
     })
+    if (!response.ok) {
+      throw new Error('Failed to fetch projects')
+    }
+    const data = await response.json()
+    data.forEach((project: prjServerResponse, index: number) => {
+      projects.push({
+        id: index,
+        name: project.name,
+        sphere: project.category.name,
+        years: project.yearOfLaunch,
+        link: project.linkToProject,
+        description: project.description,
+        additional: project.chtoto,
+        imgurl: project.imagePath,
+      })
+    })
+    showingProjects.value = projects
+    console.log(projects)
+  } catch (error) {
+    console.error('Error fetching projects:', error)
+    for (let index = 0; index < 7; index++) {
+      projects.push({
+        id: index,
+        name: `Имя ${index}`,
+        sphere: `сфера ${index}`,
+        years: index,
+        link: `ссылка ${index}`,
+        description: `описание ${index}`,
+        additional: `доп инфа ${index}`,
+        imgurl: '@/assets/pictures/заплатка.png',
+      })
+    }
   }
 }
-req.onerror = () => {
-  console.log('ашибка')
-  for (let index = 0; index < 7; index++) {
-    projects.value.push({
-      id: index,
-      name: `Имя ${index}`,
-      sphere: `сфера ${index}`,
-      years: index,
-      link: `ссылка ${index}`,
-      description: `описание ${index}`,
-      additional: `доп инфа ${index}`,
-      imgurl: '@/assets/pictures/заплатка.png',
-    })
-  }
+
+const fetchData = async () => {
+  await Promise.all([fetchCategories(), fetchProjects()])
 }
-req.send()
+
+fetchData()
 
 console.log(projects)
 
+const chosenFilter = ref(0)
 const modalVisible = ref(false)
 const msgForModal = ref({
   name: '',
@@ -93,8 +153,19 @@ const msgForModal = ref({
   description: '',
 })
 
+watch(chosenFilter, () => {
+  if (chosenFilter.value === 0) {
+    showingProjects.value = projects
+  } else {
+    showingProjects.value = projects.filter(
+      (project) => project.sphere === selectSphereMenu.value[chosenFilter.value - 1].name,
+    )
+  }
+  console.log(showingProjects.value)
+})
+
 function showModal(id: number) {
-  const infoPackForModal = projects.value[id]
+  const infoPackForModal = projects[id]
   msgForModal.value = {
     name: infoPackForModal.name,
     sphere: infoPackForModal.sphere,
@@ -117,8 +188,39 @@ function closeModal() {
 </script>
 
 <style scoped lang="scss">
-.sort-settings-wrap {
+.prj-count {
   margin-top: 376px;
+  font-size: 28px;
+}
+.opt {
+  width: 39em;
+}
+.filter {
+  background-color: #d9d9d9;
+  border-radius: 4px;
+  border-width: 1px;
+  border-color: #5574f8;
+  border-style: solid;
+  width: clamp(100px, 39vw, 700px);
+  height: 60px;
+  font-size: 17px;
+  letter-spacing: 0.05em;
+  resize: none;
+  padding: 5px 5px;
+}
+.modal {
+  z-index: 99999;
+}
+.settings-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+
+  &__txt {
+    font-size: 28px;
+  }
 }
 .list-wrap {
   display: flex;

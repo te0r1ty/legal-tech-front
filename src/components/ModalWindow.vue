@@ -4,6 +4,7 @@
       <span></span>
       <button class="close-btn" @click="$emit('closeButtonTriggered')">x</button>
     </div>
+    <!-- TODO Переделать под окно в фигме -->
     <div class="modal-frame">
       <p class="modal-name">{{ props.name }}</p>
       <p class="modal-card modal-card__sphere">{{ props.sphere }}</p>

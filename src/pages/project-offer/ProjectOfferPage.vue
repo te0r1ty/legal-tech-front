@@ -106,7 +106,7 @@ interface selectYearMenuRow {
 const selectSphereMenu = ref<selectSphereMenuRow[]>([])
 selectSphereMenu.value.push({ id: 0, name: 'Очистить выбор' })
 const req = new XMLHttpRequest()
-req.open('GET', 'http://130.193.51.137:8080/categories')
+req.open('GET', 'http://62.84.115.34:8080/categories')
 req.responseType = 'json'
 req.setRequestHeader('Authorization', 'Basic ' + btoa('holger:QU11OWIz'))
 req.onload = () => {
