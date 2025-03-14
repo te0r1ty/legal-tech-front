@@ -158,7 +158,7 @@ watch(chosenFilter, () => {
     showingProjects.value = projects
   } else {
     showingProjects.value = projects.filter(
-      (project) => project.sphere === selectSphereMenu.value[chosenFilter.value - 1].name,
+      (project) => project.sphere === selectSphereMenu.value[chosenFilter.value].name,
     )
   }
   console.log(showingProjects.value)

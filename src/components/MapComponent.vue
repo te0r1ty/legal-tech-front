@@ -25,6 +25,7 @@
       @mouseover="hoveredStationIndex = index"
       @mouseleave="hoveredStationIndex = null"
     />
+    <!--TODO Сделать ховер и для текста (сейчас только для точки есть)-->
     <!-- :\\\transform="`rotate(${0} ${station.\\\x} ${station.\\\y})`"
      убрать слеши и добавить в тег текста, если понадобится вращение-->
     <text

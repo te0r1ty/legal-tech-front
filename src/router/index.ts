@@ -29,6 +29,11 @@ const router = createRouter({
       name: 'Заявка отправлена',
       component: () => import('@/pages/project-offer/ProjectOfferSuccessPage.vue'),
     },
+    {
+      path: '/admin',
+      name: 'Личный кабинет',
+      component: () => import('@/pages/AdminPage.vue'),
+    },
   ],
 })
 
