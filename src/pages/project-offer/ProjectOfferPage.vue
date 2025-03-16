@@ -10,9 +10,9 @@
       <p class="slider-text slider-text__edit">ИЗМЕНИТЬ СВЕДЕНИЯ</p>
     </div>
     <form class="form">
-      <div class="form__block">
-        <p class="form__name">Наименование Legaltech-проекта</p>
-        <textarea v-model="form.projectName" class="form__input form__txt"></textarea>
+      <div class="flexsame">
+        <p>Наименование Legaltech-проекта</p>
+        <textarea v-model="form.projectName"></textarea>
         <transition name="fade" appear>
           <p v-if="errors.projectName" class="error">
             {{ errors.projectName }}
@@ -20,20 +20,10 @@
         </transition>
       </div>
 
-      <div class="form__block">
-        <p class="form__name">Ссылка на Legaltech-проект</p>
-        <textarea v-model="form.link" class="form__input form__txt"></textarea>
-        <transition name="fade" appear>
-          <p v-if="errors.link" class="error">
-            {{ errors.link }}
-          </p>
-        </transition>
-      </div>
-
-      <div class="form__block">
+      <div class="form__block flexsame">
         <p class="form__name">Сфера Legaltech-проекта</p>
         <select class="form__input form__select" v-model="form.sphere">
-          <option v-for="opt in selectSphereMenu" :key="opt.id" :value="opt.id">
+          <option class="opt" v-for="opt in selectSphereMenu" :key="opt.id" :value="opt.id">
             {{ opt.name }}
           </option>
         </select>
@@ -44,9 +34,9 @@
         </transition>
       </div>
 
-      <div class="form__block margin-submit">
-        <p class="form__name">Год запуска проекта</p>
-        <select class="form__input form__select" v-model="form.year">
+      <div class="flexsame">
+        <p>Год запуска проекта</p>
+        <select v-model="form.year">
           <option v-for="opt in selectYearMenu" :key="opt.id" :value="opt.year">
             {{ opt.year }}
           </option>
@@ -57,14 +47,44 @@
           </p>
         </transition>
       </div>
+    </form>
 
-      <div class="form__block">
-        <p class="form__name">Описание Legaltech-проекта</p>
-        <textarea
-          v-model="form.description"
-          class="form__input form__txt form__big-input"
-          placeholder="Расскажите нам о вашем проекте"
-        ></textarea>
+    <form class="form">
+      <div class="flexsame">
+        <p>Владелец/разработчик продукта</p>
+        <textarea v-model="form.link"></textarea>
+        <transition name="fade" appear>
+          <p v-if="errors.link" class="error">
+            {{ errors.link }}
+          </p>
+        </transition>
+      </div>
+
+      <div class="flexsame">
+        <p>Контакты Legaltech-проекта</p>
+        <textarea v-model="form.link"></textarea>
+        <transition name="fade" appear>
+          <p v-if="errors.link" class="error">
+            {{ errors.link }}
+          </p>
+        </transition>
+      </div>
+
+      <div class="flexsame">
+        <p>Ссылка на Legaltech-проект</p>
+        <textarea v-model="form.link"></textarea>
+        <transition name="fade" appear>
+          <p v-if="errors.link" class="error">
+            {{ errors.link }}
+          </p>
+        </transition>
+      </div>
+    </form>
+
+    <form class="form">
+      <div class="flexsame">
+        <p>Описание Legaltech-проекта</p>
+        <textarea v-model="form.description"></textarea>
         <transition name="fade" appear>
           <p v-if="errors.description" class="error">
             {{ errors.description }}
@@ -72,13 +92,9 @@
         </transition>
       </div>
 
-      <div class="form__block">
-        <p class="form__name">Контакты и дополнительная информация</p>
-        <textarea
-          v-model="form.extras"
-          class="form__input form__txt form__big-input"
-          placeholder="Укажите вашу почту, телефон или иной способ с вами связаться"
-        ></textarea>
+      <div class="flexsame">
+        <p>Дополнительная информация</p>
+        <textarea v-model="form.extras"></textarea>
         <transition name="fade" appear>
           <p v-if="errors.extras" class="error">
             {{ errors.extras }}
@@ -104,14 +120,13 @@ interface selectYearMenuRow {
 }
 
 const selectSphereMenu = ref<selectSphereMenuRow[]>([])
-selectSphereMenu.value.push({ id: 0, name: 'Очистить выбор' })
 const req = new XMLHttpRequest()
 req.open('GET', 'http://62.84.115.34:8080/categories')
 req.responseType = 'json'
 req.setRequestHeader('Authorization', 'Basic ' + btoa('holger:QU11OWIz'))
 req.onload = () => {
   for (let index = 0; index < req.response.length; index++) {
-    selectSphereMenu.value.push({ id: index + 1, name: req.response[index].name })
+    selectSphereMenu.value.push({ id: index, name: req.response[index].name })
   }
 }
 req.onerror = () => {
@@ -196,6 +211,14 @@ const submit = (event: Event) => {
 </script>
 
 <style scoped lang="scss">
+.opt {
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.flexsame {
+  flex: 1 1 0;
+}
 .form {
   display: flex;
   flex-wrap: wrap;
@@ -203,7 +226,6 @@ const submit = (event: Event) => {
 
   &__name {
     font-size: 20px;
-    letter-spacing: 0.05em;
     margin: 40px 0 20px 0;
   }
 
@@ -212,29 +234,19 @@ const submit = (event: Event) => {
   }
 
   &__input {
+    width: 100%;
     background-color: #d9d9d9;
     border-radius: 4px;
     border-width: 1px;
     border-color: #5574f8;
     border-style: solid;
-    width: 730px;
     height: 60px;
     font-size: 17px;
-    letter-spacing: 0.05em;
-  }
-
-  &__big-input {
-    height: 180px;
-  }
-
-  &__txt {
-    resize: none;
-    padding: 5px 5px;
+    overflow: hidden;
   }
 
   &__select {
     padding: 5px 5px;
-    width: 740px;
   }
 }
 

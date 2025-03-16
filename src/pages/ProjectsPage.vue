@@ -50,6 +50,7 @@ const selectSphereMenu = ref<selectSphereMenuRow[]>([])
 const fetchCategories = async () => {
   try {
     const response = await fetch('http://62.84.115.34:8080/categories', {
+      method: 'GET',
       headers: {
         Authorization: 'Basic ' + btoa('holger:QU11OWIz'),
       },
