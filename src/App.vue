@@ -25,7 +25,6 @@ import FadeLayout from '@/components/layout/FadeLayout.vue'
 <style scoped lang="scss">
 .blur-map {
   position: absolute;
-  padding-bottom: 400px;
   width: 100%;
   object-fit: cover;
   height: 700px;

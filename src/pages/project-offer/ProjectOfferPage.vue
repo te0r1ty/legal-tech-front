@@ -9,7 +9,7 @@
       <p class="slider-text slider-text__add">ДОБАВИТЬ ПРОЕКТ</p>
       <p class="slider-text slider-text__edit">ИЗМЕНИТЬ СВЕДЕНИЯ</p>
     </div>
-    <form class="form">
+    <div class="form">
       <div class="flexsame">
         <p>Наименование Legaltech-проекта</p>
         <textarea v-model="form.projectName"></textarea>
@@ -37,8 +37,8 @@
       <div class="flexsame">
         <p>Год запуска проекта</p>
         <select v-model="form.year">
-          <option v-for="opt in selectYearMenu" :key="opt.id" :value="opt.year">
-            {{ opt.year }}
+          <option v-for="year in selectYearMenu" :key="year" :value="year">
+            {{ year }}
           </option>
         </select>
         <transition name="fade" appear>
@@ -47,25 +47,25 @@
           </p>
         </transition>
       </div>
-    </form>
+    </div>
 
-    <form class="form">
+    <div class="form">
       <div class="flexsame">
         <p>Владелец/разработчик продукта</p>
-        <textarea v-model="form.link"></textarea>
+        <textarea v-model="form.owner"></textarea>
         <transition name="fade" appear>
-          <p v-if="errors.link" class="error">
-            {{ errors.link }}
+          <p v-if="errors.owner" class="error">
+            {{ errors.owner }}
           </p>
         </transition>
       </div>
 
       <div class="flexsame">
         <p>Контакты Legaltech-проекта</p>
-        <textarea v-model="form.link"></textarea>
+        <textarea v-model="form.contacts"></textarea>
         <transition name="fade" appear>
-          <p v-if="errors.link" class="error">
-            {{ errors.link }}
+          <p v-if="errors.contacts" class="error">
+            {{ errors.contacts }}
           </p>
         </transition>
       </div>
@@ -79,9 +79,9 @@
           </p>
         </transition>
       </div>
-    </form>
+    </div>
 
-    <form class="form">
+    <div class="form">
       <div class="flexsame">
         <p>Описание Legaltech-проекта</p>
         <textarea v-model="form.description"></textarea>
@@ -101,7 +101,10 @@
           </p>
         </transition>
       </div>
-    </form>
+    </div>
+    <div>
+      <input @change="onFileChange" type="file" accept="image/jpeg, image/png, image/jpg" />
+    </div>
     <button @click.prevent="submit" class="submit">Отправить заявку</button>
   </div>
 </template>
@@ -114,30 +117,40 @@ interface selectSphereMenuRow {
   id: number
   name: string
 }
-interface selectYearMenuRow {
-  id: number
-  year: number
-}
 
 const selectSphereMenu = ref<selectSphereMenuRow[]>([])
-const req = new XMLHttpRequest()
-req.open('GET', 'http://62.84.115.34:8080/categories')
-req.responseType = 'json'
-req.setRequestHeader('Authorization', 'Basic ' + btoa('holger:QU11OWIz'))
-req.onload = () => {
-  for (let index = 0; index < req.response.length; index++) {
-    selectSphereMenu.value.push({ id: index, name: req.response[index].name })
+
+const fetchCategories = async () => {
+  try {
+    const response = await fetch('http://62.84.115.34:8080/categories', {
+      method: 'GET',
+      headers: {
+        Authorization: 'Basic ' + btoa('holger:QU11OWIz'),
+      },
+    })
+    if (!response.ok) {
+      throw new Error('Failed to fetch categories')
+    }
+    const data = await response.json()
+    console.log(data)
+    data.forEach((category: { id: number; name: string }) => {
+      selectSphereMenu.value.push({ id: category.id, name: category.name })
+    })
+  } catch (error) {
+    console.error('Error fetching categories:', error)
   }
 }
-req.onerror = () => {
-  console.log('ашибка')
-}
-req.send()
 
-const selectYearMenu = ref<selectYearMenuRow[]>([])
+const fetchData = async () => {
+  await Promise.all([fetchCategories()])
+}
+
+fetchData()
+
+const selectYearMenu = ref<number[]>([])
 const todaysYear = new Date().getFullYear()
 for (let minYear = 1950; minYear <= todaysYear; minYear++) {
-  selectYearMenu.value.push({ id: minYear - 1949, year: minYear })
+  selectYearMenu.value.push(minYear)
 }
 selectYearMenu.value.reverse()
 
@@ -145,57 +158,131 @@ const router = useRouter()
 
 const form = ref({
   projectName: '',
-  description: '',
-  link: '',
-  extras: '',
-  sphere: '',
+  sphere: 0,
   year: 0,
+  owner: '',
+  contacts: '',
+  link: '',
+  description: '',
+  extras: '',
+  imageName: '',
   editProject: false,
 })
 
 const errors = ref({
   projectName: '',
-  description: '',
-  link: '',
-  extras: '',
   sphere: '',
-  year: 0,
+  year: '',
+  owner: '',
+  contacts: '',
+  link: '',
+  description: '',
+  extras: '',
 })
+
+const formData = new FormData()
+const onFileChange = (event: Event) => {
+  const input = event.target as HTMLInputElement
+  if (input.files && input.files.length > 0) {
+    formData.append('image', input.files[0])
+    form.value.imageName = input.files[0].name
+  }
+}
 
 const validateForm = (): boolean => {
   let isValid = true
 
   errors.value = {
     projectName: '',
-    description: '',
-    link: '',
-    extras: '',
     sphere: '',
-    year: 0,
+    year: '',
+    owner: '',
+    contacts: '',
+    link: '',
+    description: '',
+    extras: '',
   }
 
   if (!form.value.projectName) {
-    errors.value.projectName = 'Название проекта обязательно'
-    isValid = false
-  }
-  if (!form.value.description) {
-    errors.value.description = 'Описание проекта обязательно'
-    isValid = false
-  }
-  if (!form.value.link) {
-    errors.value.link = 'Ссылка на проект обязательна'
-    isValid = false
-  }
-  if (!form.value.extras) {
-    errors.value.extras = 'Контактные данные обязательны'
+    errors.value.projectName = 'Это поле обязательно для заполнения'
     isValid = false
   }
   if (!form.value.sphere) {
-    errors.value.sphere = 'Сфера проекта обязательна'
+    errors.value.sphere = 'Это поле обязательно для заполнения'
+    isValid = false
+  }
+  if (!form.value.year) {
+    errors.value.year = 'Это поле обязательно для заполнения'
+    isValid = false
+  }
+  if (!form.value.owner) {
+    errors.value.owner = 'Это поле обязательно для заполнения'
+    isValid = false
+  }
+  if (!form.value.contacts) {
+    errors.value.contacts = 'Это поле обязательно для заполнения'
+    isValid = false
+  }
+  if (!form.value.link) {
+    errors.value.link = 'Это поле обязательно для заполнения'
+    isValid = false
+  }
+  if (!form.value.description) {
+    errors.value.description = 'Это поле обязательно для заполнения'
+    isValid = false
+  }
+  if (!form.value.extras) {
+    errors.value.extras = 'Это поле обязательно для заполнения'
     isValid = false
   }
 
   return isValid
+}
+
+const sendForm = async () => {
+  try {
+    const response = await fetch('http://62.84.115.34:8080/requests', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Basic ' + btoa('holger:QU11OWIz'),
+      },
+      body: JSON.stringify({
+        name: form.value.projectName,
+        description: form.value.description,
+        categoryId: form.value.sphere,
+        yearOfLaunch: form.value.year,
+        linkToProject: form.value.link,
+        additionalInfo: form.value.extras,
+        contacts: form.value.contacts,
+        founder: form.value.owner,
+        imageName: form.value.imageName,
+      }),
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to send form.')
+    }
+  } catch (error) {
+    console.error('Error sending form:', error)
+  }
+}
+
+const sendImage = async () => {
+  try {
+    const response = await fetch('http://62.84.115.34:8080/images', {
+      method: 'POST',
+      headers: {
+        Authorization: 'Basic ' + btoa('holger:QU11OWIz'),
+      },
+      body: formData,
+    })
+    if (!response.ok) {
+      throw new Error('Failed to send image.')
+    }
+  } catch (error) {
+    console.error('Error sending image:', error)
+  }
 }
 
 const submit = (event: Event) => {
@@ -205,6 +292,8 @@ const submit = (event: Event) => {
   }
 
   console.log(form.value)
+  sendForm()
+  sendImage()
 
   router.push('/offer/success')
 }

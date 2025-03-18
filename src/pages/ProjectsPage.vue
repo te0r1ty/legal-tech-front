@@ -118,7 +118,7 @@ const fetchProjects = async () => {
       })
     })
     showingProjects.value = projects
-    console.log(projects)
+    // console.log(projects)
   } catch (error) {
     console.error('Error fetching projects:', error)
     for (let index = 0; index < 7; index++) {

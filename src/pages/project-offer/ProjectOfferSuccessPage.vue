@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="success-wrap">
     <p class="success">Ваша заявка принята и будет рассмотрена в ближайшее время!</p>
     <RouterLink class="return" :to="map_link">На главную</RouterLink>
   </div>
@@ -10,6 +10,9 @@ const map_link = '/'
 </script>
 
 <style scoped lang="scss">
+.success-wrap {
+  height: 40vw;
+}
 .success {
   margin: 240px 20% 50px 20%;
   color: white;
