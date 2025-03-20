@@ -1,5 +1,6 @@
 <template>
   <div class="offer-wrap">
+    <!--TODO Вынести в компоненты всё че можно-->
     <h1 class="projectoffer-head1">ФОРМА ЗАЯВКИ</h1>
     <div class="slider-wrap">
       <label class="switch" for="checkbox">
@@ -10,9 +11,9 @@
       <p class="slider-text slider-text__edit">ИЗМЕНИТЬ СВЕДЕНИЯ</p>
     </div>
     <div class="form">
-      <div class="flexsame">
-        <p>Наименование Legaltech-проекта</p>
-        <textarea v-model="form.projectName"></textarea>
+      <div class="form__wrap flexsame">
+        <p class="form__name">Наименование Legaltech-проекта</p>
+        <textarea class="form-textarea" v-model="form.projectName"></textarea>
         <transition name="fade" appear>
           <p v-if="errors.projectName" class="error">
             {{ errors.projectName }}
@@ -20,7 +21,7 @@
         </transition>
       </div>
 
-      <div class="form__block flexsame">
+      <div class="form__wrap flexsame">
         <p class="form__name">Сфера Legaltech-проекта</p>
         <select class="form__input form__select" v-model="form.sphere">
           <option class="opt" v-for="opt in selectSphereMenu" :key="opt.id" :value="opt.id">
@@ -35,9 +36,9 @@
       </div>
 
       <div class="flexsame">
-        <p>Год запуска проекта</p>
-        <select v-model="form.year">
-          <option v-for="year in selectYearMenu" :key="year" :value="year">
+        <p class="form__name">Год запуска проекта</p>
+        <select class="form__input form__select" v-model="form.year">
+          <option class="opt" v-for="year in selectYearMenu" :key="year" :value="year">
             {{ year }}
           </option>
         </select>
@@ -51,8 +52,8 @@
 
     <div class="form">
       <div class="flexsame">
-        <p>Владелец/разработчик продукта</p>
-        <textarea v-model="form.owner"></textarea>
+        <p class="form__name">Владелец/разработчик продукта</p>
+        <textarea class="form-textarea" v-model="form.owner"></textarea>
         <transition name="fade" appear>
           <p v-if="errors.owner" class="error">
             {{ errors.owner }}
@@ -61,8 +62,8 @@
       </div>
 
       <div class="flexsame">
-        <p>Контакты Legaltech-проекта</p>
-        <textarea v-model="form.contacts"></textarea>
+        <p class="form__name">Контакты Legaltech-проекта</p>
+        <textarea class="form-textarea" v-model="form.contacts"></textarea>
         <transition name="fade" appear>
           <p v-if="errors.contacts" class="error">
             {{ errors.contacts }}
@@ -71,8 +72,8 @@
       </div>
 
       <div class="flexsame">
-        <p>Ссылка на Legaltech-проект</p>
-        <textarea v-model="form.link"></textarea>
+        <p class="form__name">Ссылка на Legaltech-проект</p>
+        <textarea class="form-textarea" v-model="form.link"></textarea>
         <transition name="fade" appear>
           <p v-if="errors.link" class="error">
             {{ errors.link }}
@@ -83,8 +84,8 @@
 
     <div class="form">
       <div class="flexsame">
-        <p>Описание Legaltech-проекта</p>
-        <textarea v-model="form.description"></textarea>
+        <p class="form__name">Описание Legaltech-проекта</p>
+        <textarea class="form-textarea big-textarea" v-model="form.description"></textarea>
         <transition name="fade" appear>
           <p v-if="errors.description" class="error">
             {{ errors.description }}
@@ -93,8 +94,8 @@
       </div>
 
       <div class="flexsame">
-        <p>Дополнительная информация</p>
-        <textarea v-model="form.extras"></textarea>
+        <p class="form__name">Дополнительная информация</p>
+        <textarea class="form-textarea big-textarea" v-model="form.extras"></textarea>
         <transition name="fade" appear>
           <p v-if="errors.extras" class="error">
             {{ errors.extras }}
@@ -103,7 +104,19 @@
       </div>
     </div>
     <div>
-      <input @change="onFileChange" type="file" accept="image/jpeg, image/png, image/jpg" />
+      <label class="img-btn-lbl" for="upload-image-btn">{{ labelText }}</label>
+      <input
+        class="img-btn"
+        @change="onFileChange"
+        type="file"
+        accept="image/jpeg, image/png, image/jpg"
+        id="upload-image-btn"
+      />
+      <transition name="fade" appear>
+        <p v-if="errors.imageName" class="error">
+          {{ errors.imageName }}
+        </p>
+      </transition>
     </div>
     <button @click.prevent="submit" class="submit">Отправить заявку</button>
   </div>
@@ -178,7 +191,10 @@ const errors = ref({
   link: '',
   description: '',
   extras: '',
+  imageName: '',
 })
+
+const labelText = ref('Загрузить изображение')
 
 const formData = new FormData()
 const onFileChange = (event: Event) => {
@@ -186,6 +202,8 @@ const onFileChange = (event: Event) => {
   if (input.files && input.files.length > 0) {
     formData.append('image', input.files[0])
     form.value.imageName = input.files[0].name
+    labelText.value = `Выбран файл: ${input.files[0].name}`
+    errors.value.imageName = ''
   }
 }
 
@@ -201,6 +219,7 @@ const validateForm = (): boolean => {
     link: '',
     description: '',
     extras: '',
+    imageName: '',
   }
 
   if (!form.value.projectName) {
@@ -233,6 +252,10 @@ const validateForm = (): boolean => {
   }
   if (!form.value.extras) {
     errors.value.extras = 'Это поле обязательно для заполнения'
+    isValid = false
+  }
+  if (!form.value.imageName) {
+    errors.value.imageName = 'Пожалуйста, загрузите ваш логотип'
     isValid = false
   }
 
@@ -300,6 +323,36 @@ const submit = (event: Event) => {
 </script>
 
 <style scoped lang="scss">
+.img-btn-lbl {
+  display: block;
+  width: fit-content;
+  margin-top: 40px;
+  background-color: #d9d9d9;
+  color: #5574f8;
+  padding: 10px 20px;
+  border-radius: 4px;
+  border-color: #5574f8;
+  border-style: solid;
+  cursor: pointer;
+}
+.img-btn {
+  display: none;
+}
+.form-textarea {
+  width: 98%;
+  background-color: #d9d9d9;
+  border-radius: 4px;
+  border-width: 1px;
+  border-color: #5574f8;
+  border-style: solid;
+  height: 48px;
+  font-size: 17px;
+  padding: 5px;
+  resize: none;
+}
+.big-textarea {
+  height: 200px;
+}
 .opt {
   width: 200px;
   overflow: hidden;
@@ -318,7 +371,7 @@ const submit = (event: Event) => {
     margin: 40px 0 20px 0;
   }
 
-  &__block {
+  &__wrap {
     margin-bottom: 15px;
   }
 
@@ -335,7 +388,7 @@ const submit = (event: Event) => {
   }
 
   &__select {
-    padding: 5px 5px;
+    padding: 5px;
   }
 }
 
@@ -350,7 +403,7 @@ const submit = (event: Event) => {
   font-size: 25px;
   text-decoration: none;
   color: white;
-  margin-top: 40px;
+  margin: 40px 0;
 
   &:hover {
     background-color: var(--hover-underline-color);

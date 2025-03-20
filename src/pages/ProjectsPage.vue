@@ -228,6 +228,7 @@ function closeModal() {
   flex-wrap: wrap;
   column-gap: 29px;
   row-gap: 20px;
+  margin-bottom: 100px;
 }
 .projects-head1 {
   padding-top: 162px;
