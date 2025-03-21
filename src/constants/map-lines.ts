@@ -3,6 +3,7 @@ export interface MapLine {
   color: string
 }
 
+// Yes, there is 11 lines, the same as the categories, you have already verified this 3 times (+ 1 circle)
 export const MAP_LINES: readonly MapLine[] = [
   { d: 'M300 1023V77', color: '#9A292E' },
   { d: 'M1010 1023V77', color: '#6D9AB4' },

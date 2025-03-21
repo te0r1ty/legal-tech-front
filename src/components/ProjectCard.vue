@@ -3,7 +3,7 @@
     <img
       class="prj-img"
       :src="props.img == '' ? 'src/assets/pictures/заплатка.png' : props.img"
-      alt="project image"
+      alt="LegalTech"
     />
     <p class="prj-name">{{ props.name }}</p>
   </div>

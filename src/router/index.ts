@@ -34,6 +34,11 @@ const router = createRouter({
       name: 'Личный кабинет',
       component: () => import('@/pages/AdminPage.vue'),
     },
+    {
+      path: '/cookies',
+      name: 'Политика обработки персональных данных',
+      component: () => import('@/pages/CookiesPage.vue'),
+    },
   ],
 })
 

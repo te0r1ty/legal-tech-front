@@ -15,7 +15,7 @@
     <h1 class="projects-head1">ПРОЕКТЫ</h1>
     <p class="prj-count">ВСЕГО ПРОЕКТОВ: {{ projects.length }}</p>
     <div class="settings-wrap">
-      <p class="settings-wrap__txt">ВЫБРАНО ПРОЕКТОВ: {{ showingProjects.length }}</p>
+      <p class="settings-wrap__txt">ПРОЕКТОВ В ВЫБРАННОЙ КАТЕГОРИИ: {{ showingProjects.length }}</p>
       <select class="filter" v-model="chosenFilter">
         <option class="opt" v-for="opt in selectSphereMenu" :key="opt.id" :value="opt.id">
           {{ opt.name }}
@@ -117,8 +117,8 @@ const fetchProjects = async () => {
         imgurl: project.imagePath,
       })
     })
+    //projects.sort((a, b) => a.years - b.years)
     showingProjects.value = projects
-    // console.log(projects)
   } catch (error) {
     console.error('Error fetching projects:', error)
     for (let index = 0; index < 7; index++) {

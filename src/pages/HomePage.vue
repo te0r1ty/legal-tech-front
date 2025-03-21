@@ -17,7 +17,7 @@
           Карта будет постоянно обновляться. Если вы хотите увидеть свой стартап на карте
           российского LegalTech, то добавьте его.
         </p>
-        <RouterLink class="content__col1__button content__txt" :to="offer_link">
+        <RouterLink class="content__col1__button content__txt" :to="'/offer'">
           ДОБАВИТЬ ПРОЕКТ
         </RouterLink>
       </div>
@@ -43,8 +43,6 @@
 <script setup lang="ts">
 import MapComponent from '@/components/MapComponent.vue'
 import { RouterLink } from 'vue-router'
-
-const offer_link = '/offer'
 </script>
 
 <style scoped lang="scss">
@@ -65,7 +63,7 @@ const offer_link = '/offer'
   font-size: 80px;
 }
 .home-head3 {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .content {

@@ -145,7 +145,6 @@ const fetchCategories = async () => {
       throw new Error('Failed to fetch categories')
     }
     const data = await response.json()
-    console.log(data)
     data.forEach((category: { id: number; name: string }) => {
       selectSphereMenu.value.push({ id: category.id, name: category.name })
     })
