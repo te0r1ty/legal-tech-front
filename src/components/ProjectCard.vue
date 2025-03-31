@@ -2,7 +2,11 @@
   <div class="card-wrap" @click="clicked">
     <img
       class="prj-img"
-      :src="props.img == '' ? 'src/assets/pictures/заплатка.png' : props.img"
+      :src="
+        props.fullImgLink == 'http://62.84.115.34:80/img-cloning/null'
+          ? 'src/assets/pictures/legal-logo.png'
+          : props.fullImgLink
+      "
       alt="LegalTech"
     />
     <p class="prj-name">{{ props.name }}</p>
@@ -13,7 +17,7 @@
 const props = defineProps({
   id: Number,
   name: String,
-  img: String,
+  fullImgLink: String,
 })
 const emits = defineEmits(['msgForModal'])
 

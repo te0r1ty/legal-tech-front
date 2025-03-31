@@ -29,7 +29,7 @@
         :key="project.id"
         :id="project.id"
         :name="project.name"
-        :img="`http://62.84.115.34:80/img-cloning/${project.imgurl}`"
+        :full-img-link="`http://62.84.115.34:80/img-cloning/${project.imgurl}`"
       />
     </div>
   </div>
@@ -101,9 +101,11 @@ const fetchProjects = async () => {
         Authorization: 'Basic ' + btoa('holger:QU11OWIz'),
       },
     })
+
     if (!response.ok) {
       throw new Error('Failed to fetch projects')
     }
+
     const data = await response.json()
     data.forEach((project: prjServerResponse, index: number) => {
       projects.push({
@@ -117,10 +119,18 @@ const fetchProjects = async () => {
         imgurl: project.imagePath,
       })
     })
-    //projects.sort((a, b) => a.years - b.years)
+
+    projects.sort((a, b) => {
+      if (a.years === null) return 1
+      if (b.years === null) return -1
+      return a.years - b.years
+    })
+    projects.forEach((project, index) => (project.id = index))
+
     showingProjects.value = projects
   } catch (error) {
     console.error('Error fetching projects:', error)
+
     for (let index = 0; index < 7; index++) {
       projects.push({
         id: index,

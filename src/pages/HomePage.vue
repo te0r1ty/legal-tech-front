@@ -2,7 +2,7 @@
   <div class="home-wrap">
     <h1 class="home-head1">КАРТА<br />РОССИЙСКОГО<br />LEGALTECH</h1>
     <h3 class="home-head3">Все решения для автоматизации работы юристов на одной карте</h3>
-    <MapComponent class="map" style="scale: 100%" />
+    <MapComponent class="map" />
     <div class="content">
       <div class="content__col1 content__padd">
         <h2 class="content__col1__title">СОБИРАЕМ ВСЕ<br />РЕШЕНИЯ LEGALTECH<br />ВМЕСТЕ</h2>
@@ -47,6 +47,7 @@ import { RouterLink } from 'vue-router'
 
 <style scoped lang="scss">
 .map {
+  scale: 0.9;
   position: relative;
   top: 4%;
   left: 50%;

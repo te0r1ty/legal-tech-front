@@ -103,7 +103,7 @@
         </transition>
       </div>
     </div>
-    <div>
+    <div class="img-btn-wrap">
       <label class="img-btn-lbl" for="upload-image-btn">{{ labelText }}</label>
       <input
         class="img-btn"
@@ -112,7 +112,7 @@
         accept="image/jpeg, image/png, image/jpg"
         id="upload-image-btn"
       />
-      <transition name="fade" appear>
+      <transition class="img-btn-err" name="fade" appear>
         <p v-if="errors.imageName" class="error">
           {{ errors.imageName }}
         </p>
@@ -193,17 +193,31 @@ const errors = ref({
   imageName: '',
 })
 
-const labelText = ref('Загрузить изображение')
+const labelText = ref('Загрузить логотип: jpg, jpeg, png. Не менее 300x300 пикселей')
 
 const formData = new FormData()
 const onFileChange = (event: Event) => {
   const input = event.target as HTMLInputElement
-  if (input.files && input.files.length > 0) {
-    formData.append('image', input.files[0])
-    form.value.imageName = input.files[0].name
-    labelText.value = `Выбран файл: ${input.files[0].name}`
-    errors.value.imageName = ''
+
+  if (!input.files || input.files.length === 0) return
+
+  const file: File = input.files[0]
+  const img = new Image()
+  const objectURL = URL.createObjectURL(file)
+
+  img.onload = () => {
+    if (img.width < 300 || img.height < 300) {
+      errors.value.imageName = 'Неверное разрешение изображения. Не менее 300x300 пикселей'
+    } else {
+      formData.append('image', file)
+      form.value.imageName = file.name
+      labelText.value = `Выбран файл: ${file.name}`
+      errors.value.imageName = ''
+    }
+    URL.revokeObjectURL(objectURL)
   }
+
+  img.src = objectURL
 }
 
 const validateForm = (): boolean => {
@@ -322,6 +336,15 @@ const submit = (event: Event) => {
 </script>
 
 <style scoped lang="scss">
+.img-btn-err {
+  position: absolute;
+  bottom: -30px;
+}
+.img-btn-wrap {
+  display: flex;
+  position: relative;
+  justify-content: center;
+}
 .img-btn-lbl {
   display: block;
   width: fit-content;
@@ -330,6 +353,7 @@ const submit = (event: Event) => {
   color: #5574f8;
   padding: 10px 20px;
   border-radius: 4px;
+  border-width: 1px;
   border-color: #5574f8;
   border-style: solid;
   cursor: pointer;

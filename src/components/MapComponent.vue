@@ -1,6 +1,6 @@
 <template>
   <svg
-    width="1700"
+    width="1900"
     height="1100"
     viewBox="0 0 1300 1100"
     fill="none"
@@ -32,9 +32,9 @@
       class="project-name"
       v-for="(point, index) in mapPoints"
       :key="'text-' + index"
-      :x="point.x + 13"
-      :y="point.y - 5"
-      :transform="`rotate(${0} ${point.x} ${point.y})`"
+      :x="point.textX /*point.x < 644 ? point.x - 17 : point.x + 17*/"
+      :y="point.textY /*point.y + 5*/"
+      :text-anchor="point.textAnchor /*point.x < 644 ? 'end' : 'start'*/"
       :class="{
         'projcet-name__not-hovered': hoveredStationIndex === null,
         'project-name__hovered': hoveredStationIndex === index,
@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
-import { MAP_LINES } from '@/constants/map-lines.ts' //
+import { MAP_LINES, PointPlacer } from '@/constants/map-lines.ts'
 import type { MapLine } from '@/constants/map-lines.ts'
 
 interface MapPoint {
@@ -65,6 +65,9 @@ interface MapPoint {
   y: number
   color: string
   projName: string
+  textX?: number
+  textY?: number
+  textAnchor?: string
 }
 interface Prj {
   id: number
@@ -162,39 +165,42 @@ const fetchData = async () => {
 }
 
 const calculateStations = () => {
-  /*
-  const cx = 646
-  const cy = 569
-  const r = 395
-  */
   mapPoints.value = []
 
   mapLines.value.forEach((pathElement, pathIndex) => {
-    const pathLength = pathElement.getTotalLength()
     const projectsOfThisLine = projects.filter((project) => project.sphere === spheres[pathIndex])
-    const stationCount = projectsOfThisLine.length
-    const step = pathLength / (stationCount - 1)
+    let points: MapPoint[] = []
 
-    for (let i = 0; i < stationCount; i++) {
-      const point = pathElement.getPointAtLength(i * step)
-      mapPoints.value.push({
-        x: point.x,
-        y: point.y,
-        color: lines.value[pathIndex].color,
-        projName: projectsOfThisLine[i].name,
-      })
+    if (pathElement.getAttribute('stroke') === '#9A292E') {
+      points = PointPlacer.VertDarkRedMakePoints(pathElement, projectsOfThisLine)
+    } else if (pathElement.getAttribute('stroke') === '#6D9AB4') {
+      points = PointPlacer.VertLightBlueMakePoints(pathElement, projectsOfThisLine)
+    } else if (pathElement.getAttribute('stroke') === '#432F6E') {
+      points = PointPlacer.CentralDarkBlueMakePoints(pathElement, projectsOfThisLine)
+    } else if (pathElement.getAttribute('stroke') === '#BC3836') {
+      points = PointPlacer.CentralLightRedMakePoints(pathElement, projectsOfThisLine)
+    } else if (pathElement.getAttribute('stroke') === '#629C4E') {
+      points = PointPlacer.HorGreenMakePoints(pathElement, projectsOfThisLine)
+    } else if (pathElement.getAttribute('stroke') === '#E3B446') {
+      points = PointPlacer.HorYellowMakePoints(pathElement, projectsOfThisLine)
+    } else if (
+      pathElement.getAttribute('stroke') === '#91BB58' ||
+      pathElement.getAttribute('stroke') === '#DADE52'
+    ) {
+      points = PointPlacer.TopBottomMakePoints(pathElement, projectsOfThisLine)
+    } else if (
+      pathElement.getAttribute('stroke') === '#5E5C58' ||
+      pathElement.getAttribute('stroke') === '#394D8B'
+    ) {
+      points = PointPlacer.SideMakePoints(pathElement, projectsOfThisLine)
+    } else if (pathElement.getAttribute('stroke') === '#935A91') {
+      points = PointPlacer.VertPurpleMakePoints(pathElement, projectsOfThisLine)
     }
-  })
 
-  /*
-  for (let i = 0; i < stationCount.value; i++) {
-    const angle = (2 * Math.PI * i) / stationCount.value
-    mapPoints.value.push({
-      x: cx + r * Math.cos(angle),
-      y: cy + r * Math.sin(angle),
-      color: '#eef1fe',
+    points.forEach((point) => {
+      mapPoints.value.push(point)
     })
-  }*/
+  })
 }
 
 onMounted(async () => {
@@ -209,14 +215,15 @@ watch(projects, () => {
 
 <style scoped lang="scss">
 .project-name {
-  font-size: 12px;
-  font-weight: bold;
+  font-size: 11px;
+  font-weight: small;
   fill: black;
   paint-order: stroke;
   stroke: white;
   stroke-width: 5;
   stroke-linecap: round;
   stroke-linejoin: round;
+  cursor: pointer;
   transition:
     font-size 0.2s 0.3s,
     transform 0.2s 0.3s,
@@ -229,7 +236,6 @@ watch(projects, () => {
   &__hovered {
     font-size: 18px;
     stroke-width: 7;
-    transform: translate(5px, 10px);
   }
   &__hovered-another {
     opacity: 0.1;
