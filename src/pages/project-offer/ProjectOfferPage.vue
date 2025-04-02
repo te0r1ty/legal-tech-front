@@ -1,6 +1,5 @@
 <template>
   <div class="offer-wrap">
-    <!--TODO Вынести в компоненты всё че можно-->
     <h1 class="projectoffer-head1">ФОРМА ЗАЯВКИ</h1>
     <div class="slider-wrap">
       <label class="switch" for="checkbox">
@@ -254,7 +253,6 @@ const onFileChange = (event: Event) => {
 
 const validateForm = (): boolean => {
   let isValid = true
-  console.log(form.value)
   errors.value = {
     projectName: '',
     editedProjectId: '',

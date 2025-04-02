@@ -15,7 +15,7 @@
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-  transform: translateY(-10px); /* Смещение вверх */
+  transform: translateY(-10px);
 }
 
 .fade-enter-to,

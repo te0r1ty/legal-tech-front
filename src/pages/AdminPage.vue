@@ -3,7 +3,6 @@
     <h1 class="admin-head1">ЛИЧНЫЙ КАБИНЕТ</h1>
     <div class="admin-container">
       <div class="admin-menu">
-        <!--TODO Оформить место под аватарку-->
         <div class="pfp"></div>
         <p class="admin-name">Хольгер Цшайге</p>
         <nav>
@@ -16,7 +15,6 @@
               @click="selectedModule = pair.component"
             >
               {{ pair.label }}
-              <!--TODO Тут нужен счётчик заявок-->
               <span v-if="pair.label === 'Одобрить запросы'" class="badge">32</span>
             </li>
           </ul>
@@ -50,7 +48,6 @@ const selectedModule = ref(navLinks[0].component)
 }
 .content {
   width: 65%;
-  // TODO Плавное изменение высоты
   height: fit-content;
   transition: height 0.2s ease-in-out;
   background: #f5f5f5;
@@ -106,7 +103,7 @@ const selectedModule = ref(navLinks[0].component)
   margin-bottom: 10px;
 
   &::before {
-    content: '👤'; /* Placeholder */
+    content: '👤';
     font-size: 40px;
     color: #4a4a4a;
   }

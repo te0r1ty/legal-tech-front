@@ -131,8 +131,6 @@ export class PointPlacer {
     const points: MapPoint[] = []
 
     const firstBreakpoint = pathLength * 0.3
-    //const fourthBreakpoint = pathLength * 0.7
-    //использовалась для подсчёта длин, но не нужна в коде
 
     const actualPathLength = pathLength * 0.4
     const pointCount = projects.length - 3
@@ -462,11 +460,6 @@ export class PointPlacer {
       if (index * step <= lowerBreakpoint) {
         point = pathElement.getPointAtLength(step * index)
 
-        /*
-        textX = point.x + 17
-        textY = point.y + 5
-        textAnchor = 'start'
-        */
         textX = point.x + 25
         textY = point.y + 15
         textAnchor = 'middle'
@@ -479,11 +472,7 @@ export class PointPlacer {
         point = pathElement.getPointAtLength(
           upperBreakpoint + step * indexAfterBreakpoint + breakpointLeftover,
         )
-        /*
-        textX = point.x - 17
-        textY = point.y + 5
-        textAnchor = 'end'
-        */
+
         textX = point.x - 25
         textY = point.y - 15
         textAnchor = 'middle'
@@ -528,11 +517,6 @@ export class PointPlacer {
       if (index * step <= lowerBreakpoint) {
         point = pathElement.getPointAtLength(step * index)
 
-        /*
-        textX = point.x + 17
-        textY = point.y + 5
-        textAnchor = 'start'
-        */
         textX = point.x + 25
         textY = point.y - 15
         textAnchor = 'middle'
@@ -545,11 +529,6 @@ export class PointPlacer {
         point = pathElement.getPointAtLength(
           upperBreakpoint + step * indexAfterBreakpoint + breakpointLeftover,
         )
-        /*
-        textX = point.x - 17
-        textY = point.y + 5
-        textAnchor = 'end'
-        */
         textX = point.x - 25
         textY = point.y + 15
         textAnchor = 'middle'
@@ -666,7 +645,6 @@ export class PointPlacer {
   }
 }
 
-// Yes, there is 11 lines, the same as the categories, you have already verified this 3 times (+ 1 circle)
 export const MAP_LINES: readonly MapLine[] = [
   { d: 'M646 77L643 1023', color: '#935A91' },
   {
