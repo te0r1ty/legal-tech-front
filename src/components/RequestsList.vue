@@ -17,6 +17,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import RequestListItem from './RequestListItem.vue'
+import { requestsEndPoint } from '@/constants/api-links'
 interface Request {
   additionalInfo: string
   category: string
@@ -46,7 +47,8 @@ interface apiResponse {
 const requests = ref<Request[]>([])
 const fetchRequests = async () => {
   try {
-    const response = await fetch('http://62.84.115.34:8080/requests', {
+    const response = await fetch(requestsEndPoint, {
+      method: 'GET',
       headers: {
         Authorization: 'Basic ' + btoa('holger:QU11OWIz'),
       },

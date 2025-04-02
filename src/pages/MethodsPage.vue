@@ -103,7 +103,7 @@
         <br />Юридические сервисы онлайн <br />Прочие решения
       </p>
     </div>
-    <div class="column-maker">
+    <div class="column-maker bottom-margin">
       <h2 class="methods-head2-alt">ОТНЕСЕНИЕ ПРОДУКТА К КЛАССУ</h2>
       <p class="content-txt">
         Ряд продуктов, рассмотренных в исследовании, могут быть отнесены более чем к одному типу
@@ -118,6 +118,9 @@
 <script setup lang="ts"></script>
 
 <style scoped lang="scss">
+.bottom-margin {
+  margin-bottom: 100px;
+}
 .column-maker {
   position: relative;
   display: flex;
@@ -142,7 +145,7 @@
   font-weight: normal;
   max-width: 49%;
   height: fit-content;
-  font-size: 60px;
+  font-size: 56px;
 }
 .methods-head2 {
   margin: 0;

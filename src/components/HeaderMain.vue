@@ -3,7 +3,7 @@
     <nav class="nav">
       <img class="logo" src="@/assets/pictures/logo.svg" alt="Логотип LegalTech Карты" />
       <ul class="nav__list">
-        <li v-for="pair in navLinks" :key="pair.label">
+        <li class="list-el" v-for="pair in navLinks" :key="pair.label">
           <RouterLink class="nav__link" :to="pair.link">
             {{ pair.label }}
           </RouterLink>
@@ -20,6 +20,9 @@ const navLinks = NAV_LINKS
 </script>
 
 <style scoped lang="scss">
+.list-el {
+  position: relative;
+}
 .header-main {
   width: 85%;
   height: 60px;
@@ -28,20 +31,22 @@ const navLinks = NAV_LINKS
 
 .nav {
   display: flex;
+  justify-content: space-between;
   height: 60px;
 
   &__list {
     display: flex;
     justify-content: space-between;
     list-style: none;
-    margin: 0 0 0 50%;
-    width: 100%;
-    padding: 11px 26px;
+    margin: 0;
+    padding: 0;
+    width: 700px;
   }
 
   &__link {
     transition: all 0.2s ease-in-out;
     position: relative;
+    top: 10px;
     font-size: 20px;
     text-decoration: none;
     color: black;

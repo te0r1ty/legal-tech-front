@@ -10,6 +10,7 @@
         :years="msgForModal.years"
         :link="msgForModal.link"
         :description="msgForModal.description"
+        :additional="msgForModal.additional"
       />
     </transition>
     <h1 class="projects-head1">ПРОЕКТЫ</h1>
@@ -29,7 +30,7 @@
         :key="project.id"
         :id="project.id"
         :name="project.name"
-        :full-img-link="`http://62.84.115.34:80/img-cloning/${project.imgurl}`"
+        :full-img-link="`${imgEndPoint}/${project.imgurl}`"
       />
     </div>
   </div>
@@ -38,6 +39,9 @@
 <script setup lang="ts">
 import ModalWindow from '@/components/ModalWindow.vue'
 import ProjectCard from '@/components/ProjectCard.vue'
+import { categoriesEndPoint, imgEndPoint } from '@/constants/api-links'
+import { useProjectsStore } from '@/stores/projectsStore'
+import type { Prj } from '@/stores/projectsStore'
 import { ref, watch } from 'vue'
 
 interface selectSphereMenuRow {
@@ -49,7 +53,7 @@ const selectSphereMenu = ref<selectSphereMenuRow[]>([])
 
 const fetchCategories = async () => {
   try {
-    const response = await fetch('http://62.84.115.34:8080/categories', {
+    const response = await fetch(categoriesEndPoint, {
       method: 'GET',
       headers: {
         Authorization: 'Basic ' + btoa('holger:QU11OWIz'),
@@ -63,96 +67,21 @@ const fetchCategories = async () => {
     data.forEach((category: { name: string }, index: number) => {
       selectSphereMenu.value.push({ id: index + 1, name: category.name })
     })
-    console.log(selectSphereMenu.value)
   } catch (error) {
     console.error('Error fetching categories:', error)
   }
 }
 
-interface prj {
-  id: number
-  name: string
-  sphere: string
-  years: number
-  link: string
-  description: string
-  additional: string
-  imgurl: string
-}
-
-interface prjServerResponse {
-  id: number
-  name: string
-  category: { name: string }
-  yearOfLaunch: number
-  linkToProject: string
-  description: string
-  chtoto: string
-  imagePath: string
-}
-
-const projects: prj[] = []
-const showingProjects = ref<prj[]>([])
-
-const fetchProjects = async () => {
-  try {
-    const response = await fetch('http://62.84.115.34:8080/companies', {
-      headers: {
-        Authorization: 'Basic ' + btoa('holger:QU11OWIz'),
-      },
-    })
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch projects')
-    }
-
-    const data = await response.json()
-    data.forEach((project: prjServerResponse, index: number) => {
-      projects.push({
-        id: index,
-        name: project.name,
-        sphere: project.category.name,
-        years: project.yearOfLaunch,
-        link: project.linkToProject,
-        description: project.description,
-        additional: project.chtoto,
-        imgurl: project.imagePath,
-      })
-    })
-
-    projects.sort((a, b) => {
-      if (a.years === null) return 1
-      if (b.years === null) return -1
-      return a.years - b.years
-    })
-    projects.forEach((project, index) => (project.id = index))
-
-    showingProjects.value = projects
-  } catch (error) {
-    console.error('Error fetching projects:', error)
-
-    for (let index = 0; index < 7; index++) {
-      projects.push({
-        id: index,
-        name: `Имя ${index}`,
-        sphere: `сфера ${index}`,
-        years: index,
-        link: `ссылка ${index}`,
-        description: `описание ${index}`,
-        additional: `доп инфа ${index}`,
-        imgurl: '@/assets/pictures/заплатка.png',
-      })
-    }
-  }
-}
+const projectsStore = useProjectsStore()
+useProjectsStore().fetchProjects()
+const projects: Prj[] = projectsStore.projects
+const showingProjects = ref<Prj[]>(projects)
 
 const fetchData = async () => {
-  await Promise.all([fetchCategories(), fetchProjects()])
+  await Promise.all([fetchCategories()])
 }
 
 fetchData()
-
-console.log(projects)
 
 const chosenFilter = ref(0)
 const modalVisible = ref(false)
@@ -162,6 +91,7 @@ const msgForModal = ref({
   years: 0,
   link: '',
   description: '',
+  additional: '',
 })
 
 watch(chosenFilter, () => {
@@ -183,6 +113,7 @@ function showModal(id: number) {
     years: infoPackForModal.years,
     link: infoPackForModal.link,
     description: infoPackForModal.description,
+    additional: infoPackForModal.additional,
   }
   modalVisible.value = true
 }
@@ -194,6 +125,7 @@ function closeModal() {
     years: 0,
     link: '',
     description: '',
+    additional: '',
   }
 }
 </script>

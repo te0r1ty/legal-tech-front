@@ -1,7 +1,11 @@
 <template>
   <div class="success-wrap">
-    <p class="success">Ваша заявка принята и будет рассмотрена в ближайшее время!</p>
-    <RouterLink class="return" :to="map_link">На главную</RouterLink>
+    <div class="green-centering-wrap">
+      <a class="success">Ваша заявка принята и будет рассмотрена в ближайшее время!</a>
+    </div>
+    <div class="blue-centering-wrap">
+      <RouterLink class="return" :to="map_link">На главную</RouterLink>
+    </div>
   </div>
 </template>
 
@@ -10,11 +14,25 @@ const map_link = '/'
 </script>
 
 <style scoped lang="scss">
+.green-centering-wrap {
+  position: relative;
+  width: 100%;
+  height: 70%;
+}
+.blue-centering-wrap {
+  position: relative;
+  width: 100%;
+  height: 10%;
+}
 .success-wrap {
   height: 40vw;
 }
 .success {
-  margin: 240px 20% 50px 20%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  margin: 0;
   color: white;
   padding: 7% 5%;
   height: 80px;
@@ -24,8 +42,11 @@ const map_link = '/'
 }
 
 .return {
-  width: 193px;
-  margin: 0 43.2% 0 43.2%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: fit-content;
   text-decoration: none;
   transition: background-color 0.2s ease-in-out;
   background-color: var(--main-color);

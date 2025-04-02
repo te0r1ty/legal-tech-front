@@ -2,7 +2,7 @@
   <svg
     width="1900"
     height="1100"
-    viewBox="0 0 1300 1100"
+    viewBox="0 0 1330 1100"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -24,23 +24,24 @@
       :fill="point.color"
       @mouseover="hoveredStationIndex = index"
       @mouseleave="hoveredStationIndex = null"
+      @click="clicked(point.projId)"
     />
-    <!--TODO Сделать ховер и для текста (сейчас только для точки есть)-->
-    <!-- :\\\transform="`rotate(${0} ${station.\\\x} ${station.\\\y})`"
-     убрать слеши и добавить в тег текста, если понадобится вращение-->
     <text
       class="project-name"
       v-for="(point, index) in mapPoints"
       :key="'text-' + index"
-      :x="point.textX /*point.x < 644 ? point.x - 17 : point.x + 17*/"
-      :y="point.textY /*point.y + 5*/"
-      :text-anchor="point.textAnchor /*point.x < 644 ? 'end' : 'start'*/"
+      :x="point.textX"
+      :y="point.textY"
+      :text-anchor="point.textAnchor"
       :class="{
         'projcet-name__not-hovered': hoveredStationIndex === null,
         'project-name__hovered': hoveredStationIndex === index,
         'project-name__hovered-another':
           hoveredStationIndex !== index && hoveredStationIndex !== null,
       }"
+      @mouseover="hoveredStationIndex = index"
+      @mouseleave="hoveredStationIndex = null"
+      @click="clicked(point.projId)"
     >
       {{ point.projName }}
     </text>
@@ -57,40 +58,13 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
-import { MAP_LINES, PointPlacer } from '@/constants/map-lines.ts'
-import type { MapLine } from '@/constants/map-lines.ts'
+import { MAP_LINES, PointPlacer, type MapLine, type MapPoint } from '@/constants/map-lines.ts'
+import { useProjectsStore, type Prj } from '@/stores/projectsStore.ts'
+import { categoriesEndPoint } from '@/constants/api-links'
 
-interface MapPoint {
-  x: number
-  y: number
-  color: string
-  projName: string
-  textX?: number
-  textY?: number
-  textAnchor?: string
-}
-interface Prj {
-  id: number
-  name: string
-  sphere: string
-  years: number
-  link: string
-  description: string
-  additional: string
-  imgurl: string
-}
-interface PrjServerResponse {
-  id: number
-  name: string
-  category: { name: string }
-  yearOfLaunch: number
-  linkToProject: string
-  description: string
-  chtoto: string
-  imagePath: string
-}
-
-const projects: Prj[] = []
+const projectsStore = useProjectsStore()
+projectsStore.fetchProjects()
+const projects: Prj[] = projectsStore.projects
 const spheres: string[] = []
 
 const lines = ref<MapLine[]>([])
@@ -104,7 +78,7 @@ const hoveredStationIndex = ref<number | null>(null)
 
 const fetchCategories = async () => {
   try {
-    const response = await fetch('http://62.84.115.34:8080/categories', {
+    const response = await fetch(categoriesEndPoint, {
       method: 'GET',
       headers: {
         Authorization: 'Basic ' + btoa('holger:QU11OWIz'),
@@ -121,47 +95,8 @@ const fetchCategories = async () => {
     console.error('Error fetching categories:', error)
   }
 }
-const fetchProjects = async () => {
-  try {
-    const response = await fetch('http://62.84.115.34:8080/companies', {
-      headers: {
-        Authorization: 'Basic ' + btoa('holger:QU11OWIz'),
-      },
-    })
-    if (!response.ok) {
-      throw new Error('Failed to fetch projects')
-    }
-    const data = await response.json()
-    data.forEach((project: PrjServerResponse, index: number) => {
-      projects.push({
-        id: index,
-        name: project.name,
-        sphere: project.category.name,
-        years: project.yearOfLaunch,
-        link: project.linkToProject,
-        description: project.description,
-        additional: project.chtoto,
-        imgurl: project.imagePath,
-      })
-    })
-  } catch (error) {
-    console.error('Error fetching projects:', error)
-    for (let index = 0; index < 7; index++) {
-      projects.push({
-        id: index,
-        name: `Имя ${index}`,
-        sphere: `сфера ${index}`,
-        years: index,
-        link: `ссылка ${index}`,
-        description: `описание ${index}`,
-        additional: `доп инфа ${index}`,
-        imgurl: '@/assets/pictures/заплатка.png',
-      })
-    }
-  }
-}
 const fetchData = async () => {
-  await Promise.all([fetchCategories(), fetchProjects()])
+  await Promise.all([fetchCategories()])
 }
 
 const calculateStations = () => {
@@ -211,6 +146,11 @@ onMounted(async () => {
 watch(projects, () => {
   calculateStations()
 })
+
+const emits = defineEmits(['msgForModal'])
+function clicked(id: number) {
+  emits('msgForModal', id)
+}
 </script>
 
 <style scoped lang="scss">

@@ -1,14 +1,6 @@
 <template>
   <div class="card-wrap" @click="clicked">
-    <img
-      class="prj-img"
-      :src="
-        props.fullImgLink == 'http://62.84.115.34:80/img-cloning/null'
-          ? 'src/assets/pictures/legal-logo.png'
-          : props.fullImgLink
-      "
-      alt="LegalTech"
-    />
+    <img class="prj-img" :src="props.fullImgLink" alt="LegalTech" />
     <p class="prj-name">{{ props.name }}</p>
   </div>
 </template>

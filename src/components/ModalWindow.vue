@@ -1,18 +1,44 @@
 <template>
-  <div class="modal-wrap">
-    <div class="btn-wrap">
-      <span></span>
-      <button class="close-btn" @click="$emit('closeButtonTriggered')">x</button>
-    </div>
-    <!-- TODO Переделать под окно в фигме -->
-    <div class="modal-frame">
-      <p class="modal-name">{{ props.name }}</p>
-      <p class="modal-card modal-card__sphere">{{ props.sphere }}</p>
-      <p class="modal-card modal-card__years">Запустился в {{ props.years }} году</p>
-      <a class="modal-card modal-card__link" v-bind:href="props.link" target="_blank"
-        >Перейти к проекту</a
-      >
-      <p class="modal-card modal-card__desc">{{ props.description }}</p>
+  <div class="modal-shade">
+    <div class="modal-wrap">
+      <div class="btn-wrap">
+        <span></span>
+        <button class="close-btn" @click="$emit('closeButtonTriggered')">x</button>
+      </div>
+      <!-- TODO Переделать под окно в фигме -->
+      <div class="modal-frame">
+        <div class="modal-content-wrap">
+          <p class="modal-name">{{ props.name }}</p>
+        </div>
+        <div class="modal-content-wrap">
+          <div class="flex-wrap220">
+            <p class="modal-card-name">Сфера проекта</p>
+            <p class="modal-card modal-card__sphere">{{ props.sphere }}</p>
+          </div>
+          <div class="flex-wrap110">
+            <p class="modal-card-name">Год запуска</p>
+            <p class="modal-card modal-card__years">Запустился в {{ props.years }} году</p>
+          </div>
+          <div class="flex-wrap110">
+            <p class="modal-card-name">Ссылка на проект</p>
+            <a class="modal-card modal-card__link" v-bind:href="props.link" target="_blank">{{
+              props.link
+            }}</a>
+          </div>
+        </div>
+        <div class="modal-content-wrap">
+          <div class="flex-wrap110">
+            <p class="modal-card-name">Описание проекта</p>
+            <p class="modal-card modal-card__desc">{{ props.description }}</p>
+          </div>
+        </div>
+        <div class="modal-content-wrap">
+          <div class="flex-wrap110">
+            <p class="modal-card-name">Дополнительная информация</p>
+            <p class="modal-card modal-card__desc">{{ props.additional }}</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -24,10 +50,30 @@ const props = defineProps({
   years: Number,
   link: String,
   description: String,
+  additional: String,
 })
 </script>
 
 <style scoped lang="scss">
+.flex-wrap220 {
+  flex: 2 2 0;
+}
+.flex-wrap110 {
+  flex: 1 1 0;
+}
+.modal-card-name {
+  font-size: 1.5rem;
+  margin: 15px 0;
+  width: fit-content;
+}
+.modal-content-wrap {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 50px;
+  width: 100%;
+  height: fit-content;
+  margin: 20px 0;
+}
 .modal-card {
   font-size: 0.59em;
   font-weight: lighter;
@@ -37,57 +83,31 @@ const props = defineProps({
   border-radius: 0.3rem;
   background-color: #d9d9d9;
   padding: 0.5rem;
-  margin-top: 0;
+  margin: 0;
   color: black;
   position: relative;
 
   &__sphere {
-    margin-left: 3rem;
-    top: -0.7rem;
-    width: 41.6rem;
-    height: 1.5rem;
-
-    &::before {
-      content: 'Сфера проекта';
-      position: absolute;
-      top: -35px;
-      left: 0;
-      font-size: 1.2em;
-    }
+    height: fit-content;
+    width: 100%;
   }
 
   &__years {
     text-align: center;
-    top: -0.7rem;
-    width: 14.4rem;
-    height: 1.5rem;
-
-    &::before {
-      content: 'Год запуска';
-      position: absolute;
-      top: -35px;
-      left: 0;
-      font-size: 1.2em;
-    }
+    height: fit-content;
+    width: 100%;
   }
 
   //TODO Сделать укороченную ссылку
   &__link {
+    display: block;
     transition: all 0.2s;
-    top: -0.7rem;
-    margin-right: 3rem;
-    width: 14rem;
-    height: 1.5rem;
-    text-align: center;
+    height: fit-content;
     text-decoration: none;
-
-    &::before {
-      content: 'Ссылка на проект';
-      position: absolute;
-      top: -35px;
-      left: 0;
-      font-size: 1.2em;
-    }
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 80%;
 
     &:hover {
       background-color: #5574f8;
@@ -95,22 +115,13 @@ const props = defineProps({
   }
 
   &__desc {
-    margin-left: 3rem;
-    width: 77.7rem;
-    height: 9rem;
-    padding-bottom: 8rem;
-
-    &::before {
-      content: 'Описание проекта';
-      position: absolute;
-      top: -35px;
-      left: 0;
-      font-size: 1.2em;
-    }
+    height: fit-content;
+    width: 95%;
   }
 }
 .modal-name {
-  padding: 3rem 0 0 3rem;
+  padding: 0;
+  margin: 0;
   font-size: 1.5em;
   font-weight: lighter;
   height: 4rem;
@@ -119,13 +130,12 @@ const props = defineProps({
   top: -1rem;
 }
 .modal-frame {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-top: 5rem;
-  margin-left: 15.8rem;
-  width: 85rem;
-  height: 40rem;
+  position: absolute;
+  padding: 40px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: clamp(700px, 70vw, 1300px);
+  height: fit-content;
   row-gap: 0px;
   background-color: #ffffff;
   border-radius: 0.5rem;
@@ -144,13 +154,24 @@ const props = defineProps({
 .btn-wrap {
   display: flex;
   justify-content: space-between;
+  position: absolute;
+  top: -80px;
+  right: 20px;
 }
 .modal-wrap {
   top: 0;
   left: 0;
-  position: fixed;
+  position: absolute;
+  margin-top: 100px;
   width: 100%;
   height: 100%;
+}
+.modal-shade {
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  height: 1000%;
   background-color: rgb(0, 0, 0, 0.5);
 }
 

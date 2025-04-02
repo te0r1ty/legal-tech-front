@@ -1,8 +1,21 @@
 <template>
   <div class="home-wrap">
+    <transition name="fade" appear>
+      <ModalWindow
+        class="modal"
+        @close-button-triggered="closeModal"
+        v-if="modalVisible"
+        :name="msgForModal.name"
+        :sphere="msgForModal.sphere"
+        :years="msgForModal.years"
+        :link="msgForModal.link"
+        :description="msgForModal.description"
+        :additional="msgForModal.additional"
+      />
+    </transition>
     <h1 class="home-head1">КАРТА<br />РОССИЙСКОГО<br />LEGALTECH</h1>
     <h3 class="home-head3">Все решения для автоматизации работы юристов на одной карте</h3>
-    <MapComponent class="map" />
+    <MapComponent class="map" @msg-for-modal="showModal" />
     <div class="content">
       <div class="content__col1 content__padd">
         <h2 class="content__col1__title">СОБИРАЕМ ВСЕ<br />РЕШЕНИЯ LEGALTECH<br />ВМЕСТЕ</h2>
@@ -29,28 +42,73 @@
         <p class="content__col2__email content__txt">info@legaltechmap.ru</p>
       </div>
       <div class="content__col3 content__padd">
-        <img
+        <!--<img
           class="content__col3__pic"
           src="@/assets/pictures/заплатка.png"
           alt="Карта Российского LegalTech"
-        />
+        />-->
       </div>
     </div>
-    <img class="add-palceholder" src="@/assets/pictures/заплатка.png" alt="add-placeholder" />
+    <!--<img class="add-palceholder" src="@/assets/pictures/заплатка.png" alt="add-placeholder" />-->
   </div>
 </template>
 
 <script setup lang="ts">
 import MapComponent from '@/components/MapComponent.vue'
+import ModalWindow from '@/components/ModalWindow.vue'
+import { useProjectsStore } from '@/stores/projectsStore'
+import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
+
+const modalVisible = ref(false)
+const msgForModal = ref({
+  name: '',
+  sphere: '',
+  years: 0,
+  link: '',
+  description: '',
+  additional: '',
+})
+
+const projectStore = useProjectsStore()
+
+function showModal(id: number) {
+  const infoPackForModal = projectStore.projects[id]
+  msgForModal.value = {
+    name: infoPackForModal.name,
+    sphere: infoPackForModal.sphere,
+    years: infoPackForModal.years,
+    link: infoPackForModal.link,
+    description: infoPackForModal.description,
+    additional: infoPackForModal.additional,
+  }
+  modalVisible.value = true
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+function closeModal() {
+  modalVisible.value = false
+  msgForModal.value = {
+    name: '',
+    sphere: '',
+    years: 0,
+    link: '',
+    description: '',
+    additional: '',
+  }
+  window.scrollTo({ top: 800, behavior: 'smooth' })
+}
 </script>
 
 <style scoped lang="scss">
+.modal {
+  z-index: 99999;
+}
 .map {
+  width: 100%;
   scale: 0.9;
   position: relative;
   top: 4%;
-  left: 50%;
+  left: 52%;
   translate: -50%;
 }
 .home-wrap {
@@ -68,7 +126,7 @@ import { RouterLink } from 'vue-router'
 }
 
 .content {
-  margin-top: 240px;
+  margin: 140px 0;
   display: flex;
   gap: 20px;
 

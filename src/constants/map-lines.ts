@@ -1,18 +1,11 @@
-interface Prj {
-  id: number
-  name: string
-  sphere: string
-  years: number
-  link: string
-  description: string
-  additional: string
-  imgurl: string
-}
-interface MapPoint {
+import type { Prj } from '@/stores/projectsStore'
+
+export interface MapPoint {
   x: number
   y: number
   color: string
   projName: string
+  projId: number
   textX?: number
   textY?: number
   textAnchor?: string
@@ -123,6 +116,7 @@ export class PointPlacer {
         y: point.y,
         color: pathElement.getAttribute('stroke')!,
         projName: project.name,
+        projId: project.id,
         textX: textX,
         textY: textY,
         textAnchor: textAnchor,
@@ -167,6 +161,7 @@ export class PointPlacer {
         y: point.y,
         color: pathElement.getAttribute('stroke')!,
         projName: this.shortenName(project.name)!,
+        projId: project.id,
         textX: textX,
         textY: textY,
         textAnchor: textAnchor,
@@ -223,6 +218,7 @@ export class PointPlacer {
         y: point.y,
         color: pathElement.getAttribute('stroke')!,
         projName: project.name,
+        projId: project.id,
         textX: textX,
         textY: textY,
         textAnchor: textAnchor,
@@ -328,6 +324,7 @@ export class PointPlacer {
         y: point.y,
         color: pathElement.getAttribute('stroke')!,
         projName: project.name,
+        projId: project.id,
         textX: textX,
         textY: textY,
         textAnchor: textAnchor,
@@ -432,6 +429,7 @@ export class PointPlacer {
         y: point.y,
         color: pathElement.getAttribute('stroke')!,
         projName: project.name,
+        projId: project.id,
         textX: textX,
         textY: textY,
         textAnchor: textAnchor,
@@ -497,6 +495,7 @@ export class PointPlacer {
         y: point.y,
         color: pathElement.getAttribute('stroke')!,
         projName: project.name,
+        projId: project.id,
         textX: textX,
         textY: textY,
         textAnchor: textAnchor,
@@ -563,6 +562,7 @@ export class PointPlacer {
         y: point.y,
         color: pathElement.getAttribute('stroke')!,
         projName: project.name,
+        projId: project.id,
         textX: textX,
         textY: textY,
         textAnchor: textAnchor,
@@ -609,6 +609,7 @@ export class PointPlacer {
         y: point.y,
         color: pathElement.getAttribute('stroke')!,
         projName: project.name,
+        projId: project.id,
         textX: point.x + 17,
         textY: point.y + 5,
         textAnchor: 'start',
@@ -654,6 +655,7 @@ export class PointPlacer {
         y: point.y,
         color: pathElement.getAttribute('stroke')!,
         projName: project.name,
+        projId: project.id,
         textX: point.x - 17,
         textY: point.y + 5,
         textAnchor: 'end',

@@ -11,12 +11,32 @@
       <p class="slider-text slider-text__edit">ИЗМЕНИТЬ СВЕДЕНИЯ</p>
     </div>
     <div class="form">
-      <div class="form__wrap flexsame">
+      <div class="form__wrap flexsame" v-if="!form.editProject">
         <p class="form__name">Наименование Legaltech-проекта</p>
         <textarea class="form-textarea" v-model="form.projectName"></textarea>
         <transition name="fade" appear>
           <p v-if="errors.projectName" class="error">
             {{ errors.projectName }}
+          </p>
+        </transition>
+      </div>
+
+      <div class="form__wrap flexsame" v-if="form.editProject">
+        <p class="form__name">Выберите проект</p>
+        <select class="form__input form__select" v-model="form.editedProjectId">
+          <option class="opt" value="-1" disabled>Выберите проект</option>
+          <option
+            class="opt"
+            v-for="pair in projectsStore.projectsNamesAndIds"
+            :key="pair.id"
+            :value="pair.id"
+          >
+            {{ pair.name }}
+          </option>
+        </select>
+        <transition name="fade" appear>
+          <p v-if="errors.editedProjectId" class="error sphere-error">
+            {{ errors.editedProjectId }}
           </p>
         </transition>
       </div>
@@ -43,7 +63,7 @@
           </option>
         </select>
         <transition name="fade" appear>
-          <p v-if="errors.year" class="error">
+          <p v-if="errors.year" class="error sphere-error">
             {{ errors.year }}
           </p>
         </transition>
@@ -103,6 +123,7 @@
         </transition>
       </div>
     </div>
+
     <div class="img-btn-wrap">
       <label class="img-btn-lbl" for="upload-image-btn">{{ labelText }}</label>
       <input
@@ -123,7 +144,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import {
+  categoriesEndPoint,
+  imageSendEndPoint,
+  requestsEndPoint,
+  requestsUpdateEndPoint,
+} from '@/constants/api-links'
+import { useProjectsStore } from '@/stores/projectsStore'
+import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 interface selectSphereMenuRow {
@@ -131,11 +159,13 @@ interface selectSphereMenuRow {
   name: string
 }
 
+const projectsStore = useProjectsStore()
+useProjectsStore().fetchProjects()
 const selectSphereMenu = ref<selectSphereMenuRow[]>([])
 
 const fetchCategories = async () => {
   try {
-    const response = await fetch('http://62.84.115.34:8080/categories', {
+    const response = await fetch(categoriesEndPoint, {
       method: 'GET',
       headers: {
         Authorization: 'Basic ' + btoa('holger:QU11OWIz'),
@@ -170,6 +200,7 @@ const router = useRouter()
 
 const form = ref({
   projectName: '',
+  editedProjectId: -1,
   sphere: 0,
   year: 0,
   owner: '',
@@ -183,6 +214,7 @@ const form = ref({
 
 const errors = ref({
   projectName: '',
+  editedProjectId: '',
   sphere: '',
   year: '',
   owner: '',
@@ -222,9 +254,10 @@ const onFileChange = (event: Event) => {
 
 const validateForm = (): boolean => {
   let isValid = true
-
+  console.log(form.value)
   errors.value = {
     projectName: '',
+    editedProjectId: '',
     sphere: '',
     year: '',
     owner: '',
@@ -235,9 +268,16 @@ const validateForm = (): boolean => {
     imageName: '',
   }
 
-  if (!form.value.projectName) {
-    errors.value.projectName = 'Это поле обязательно для заполнения'
-    isValid = false
+  if (form.value.editProject) {
+    if (!form.value.editedProjectId) {
+      errors.value.editedProjectId = 'Это поле обязательно для заполнения'
+      isValid = false
+    }
+  } else {
+    if (!form.value.projectName) {
+      errors.value.projectName = 'Это поле обязательно для заполнения'
+      isValid = false
+    }
   }
   if (!form.value.sphere) {
     errors.value.sphere = 'Это поле обязательно для заполнения'
@@ -277,24 +317,40 @@ const validateForm = (): boolean => {
 
 const sendForm = async () => {
   try {
-    const response = await fetch('http://62.84.115.34:8080/requests', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Basic ' + btoa('holger:QU11OWIz'),
+    const response = await fetch(
+      form.value.editProject ? requestsUpdateEndPoint : requestsEndPoint,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Basic ' + btoa('holger:QU11OWIz'),
+        },
+        body: form.value.editProject
+          ? JSON.stringify({
+              companyId: form.value.editedProjectId,
+              name: projectsStore.getProjectById(form.value.editedProjectId)?.name,
+              description: form.value.description,
+              categoryId: form.value.sphere,
+              yearOfLaunch: form.value.year,
+              linkToProject: form.value.link,
+              additionalInfo: form.value.extras,
+              contacts: form.value.contacts,
+              founder: form.value.owner,
+              imageName: form.value.imageName,
+            })
+          : JSON.stringify({
+              name: form.value.projectName,
+              description: form.value.description,
+              categoryId: form.value.sphere,
+              yearOfLaunch: form.value.year,
+              linkToProject: form.value.link,
+              additionalInfo: form.value.extras,
+              contacts: form.value.contacts,
+              founder: form.value.owner,
+              imageName: form.value.imageName,
+            }),
       },
-      body: JSON.stringify({
-        name: form.value.projectName,
-        description: form.value.description,
-        categoryId: form.value.sphere,
-        yearOfLaunch: form.value.year,
-        linkToProject: form.value.link,
-        additionalInfo: form.value.extras,
-        contacts: form.value.contacts,
-        founder: form.value.owner,
-        imageName: form.value.imageName,
-      }),
-    })
+    )
 
     if (!response.ok) {
       throw new Error('Failed to send form.')
@@ -306,7 +362,7 @@ const sendForm = async () => {
 
 const sendImage = async () => {
   try {
-    const response = await fetch('http://62.84.115.34:8080/images', {
+    const response = await fetch(imageSendEndPoint, {
       method: 'POST',
       headers: {
         Authorization: 'Basic ' + btoa('holger:QU11OWIz'),
@@ -327,12 +383,31 @@ const submit = (event: Event) => {
     return
   }
 
-  console.log(form.value)
   sendForm()
   sendImage()
 
   router.push('/offer/success')
 }
+
+watch(
+  () => form.value.editedProjectId,
+  () => {
+    const chosenProject = projectsStore.getProjectById(form.value.editedProjectId)
+
+    if (chosenProject) {
+      form.value.projectName = chosenProject.name
+      form.value.sphere = selectSphereMenu.value.find(
+        (sphere) => sphere.name === chosenProject.sphere,
+      )!.id
+      form.value.year = chosenProject.years
+      form.value.owner = chosenProject.owner
+      form.value.contacts = chosenProject.contacts
+      form.value.link = chosenProject.link
+      form.value.description = chosenProject.description
+      form.value.extras = chosenProject.additional
+    }
+  },
+)
 </script>
 
 <style scoped lang="scss">
@@ -449,10 +524,10 @@ const submit = (event: Event) => {
 }
 
 .error {
-  position: absolute;
   font-size: 20px;
   color: rgb(160, 0, 0);
   margin: 0;
+  width: 100%;
 }
 .error-active {
   opacity: 1;
