@@ -1,7 +1,7 @@
 import { projectsEndPoint } from '@/constants/api-links'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-
+//hola amigo
 export interface Prj {
   id: number
   name: string
