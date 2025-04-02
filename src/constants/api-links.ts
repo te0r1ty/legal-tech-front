@@ -1,6 +1,6 @@
 const ip = 'http://89.169.139.116'
 const mainPort = '8080'
-const imgPort = '80'
+const imgPort = '8081'
 export const projectsEndPoint = `${ip}:${mainPort}/companies`
 export const categoriesEndPoint = `${ip}:${mainPort}/categories`
 export const requestsEndPoint = `${ip}:${mainPort}/requests`
