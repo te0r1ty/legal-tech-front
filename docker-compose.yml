@@ -1,0 +1,16 @@
+services:
+  backend:
+    image: dachereukho17/legaltech-backend:1100
+    volumes:
+      - /var/www/img-cloning:/mnt/uploads
+    expose:
+      - '8080'
+
+  frontend:
+    image: te0r1ty/legal-tech-front:1.005
+    ports:
+      - '80:80'
+    extra_hosts:
+      - 'host.docker.internal:8081'
+    depends_on:
+      - backend
