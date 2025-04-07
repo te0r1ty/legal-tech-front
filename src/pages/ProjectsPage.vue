@@ -102,7 +102,6 @@ watch(chosenFilter, () => {
       (project) => project.sphere === selectSphereMenu.value[chosenFilter.value].name,
     )
   }
-  console.log(showingProjects.value)
 })
 
 function showModal(id: number) {
@@ -116,6 +115,7 @@ function showModal(id: number) {
     additional: infoPackForModal.additional,
   }
   modalVisible.value = true
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 function closeModal() {
   modalVisible.value = false

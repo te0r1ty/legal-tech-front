@@ -42,11 +42,13 @@
         <p class="content__col2__email content__txt">info@legaltechmap.ru</p>
       </div>
       <div class="content__col3 content__padd">
-        <!--<img
-          class="content__col3__pic"
-          src="@/assets/pictures/заплатка.png"
-          alt="Карта Российского LegalTech"
-        />-->
+        <a href="https://noroots.ru" target="_blank">
+          <img
+            class="content__col3__pic"
+            src="@/assets/pictures/noroots-banner.png"
+            alt="Карта Российского LegalTech"
+          />
+        </a>
       </div>
     </div>
     <!--<img class="add-palceholder" src="@/assets/pictures/заплатка.png" alt="add-placeholder" />-->

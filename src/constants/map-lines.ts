@@ -462,11 +462,6 @@ export class PointPlacer {
       if (index * step <= lowerBreakpoint) {
         point = pathElement.getPointAtLength(step * index)
 
-        /*
-        textX = point.x + 17
-        textY = point.y + 5
-        textAnchor = 'start'
-        */
         textX = point.x + 25
         textY = point.y + 15
         textAnchor = 'middle'
@@ -479,11 +474,7 @@ export class PointPlacer {
         point = pathElement.getPointAtLength(
           upperBreakpoint + step * indexAfterBreakpoint + breakpointLeftover,
         )
-        /*
-        textX = point.x - 17
-        textY = point.y + 5
-        textAnchor = 'end'
-        */
+
         textX = point.x - 25
         textY = point.y - 15
         textAnchor = 'middle'
@@ -528,11 +519,6 @@ export class PointPlacer {
       if (index * step <= lowerBreakpoint) {
         point = pathElement.getPointAtLength(step * index)
 
-        /*
-        textX = point.x + 17
-        textY = point.y + 5
-        textAnchor = 'start'
-        */
         textX = point.x + 25
         textY = point.y - 15
         textAnchor = 'middle'
@@ -545,11 +531,7 @@ export class PointPlacer {
         point = pathElement.getPointAtLength(
           upperBreakpoint + step * indexAfterBreakpoint + breakpointLeftover,
         )
-        /*
-        textX = point.x - 17
-        textY = point.y + 5
-        textAnchor = 'end'
-        */
+
         textX = point.x - 25
         textY = point.y + 15
         textAnchor = 'middle'
@@ -666,7 +648,7 @@ export class PointPlacer {
   }
 }
 
-// Yes, there is 11 lines, the same as the categories, you have already verified this 3 times (+ 1 circle)
+// 11 lines, circle isn't used
 export const MAP_LINES: readonly MapLine[] = [
   { d: 'M646 77L643 1023', color: '#935A91' },
   {

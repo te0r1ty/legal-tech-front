@@ -8,7 +8,7 @@
       </p>
       <img class="logo" src="@/assets/pictures/logo.svg" alt="LT_LOGO_SVG" />
       <img class="vk-link" src="@/assets/pictures/vk-logo.svg" alt="VK_LINK_IMG" />
-      <p class="mail">info@legaltechmap.ru</p>
+      <a href="mailto:info@legaltechmap.ru"> <p class="mail">info@legaltechmap.ru</p></a>
     </div>
     <p class="copyright">Copyright © 2024 Карта российского LegalTech</p>
   </footer>

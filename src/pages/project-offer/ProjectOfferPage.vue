@@ -254,7 +254,7 @@ const onFileChange = (event: Event) => {
 
 const validateForm = (): boolean => {
   let isValid = true
-  console.log(form.value)
+
   errors.value = {
     projectName: '',
     editedProjectId: '',
