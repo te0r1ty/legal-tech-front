@@ -186,12 +186,8 @@ function clicked(id: number) {
   transition: r 0.2s;
   transition-delay: 0.3s;
   cursor: pointer;
-
-  &:hover {
-    r: 14;
-  }
 }
-
+// TODO сделать общую обработку hover
 .project-category-line {
   stroke-width: 10;
   fill: none;

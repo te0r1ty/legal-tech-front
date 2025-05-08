@@ -1,9 +1,8 @@
-const ip = 'http://89.169.139.116'
-const mainPort = '8080'
-const imgPort = '8081'
-export const projectsEndPoint = `${ip}:${mainPort}/companies`
-export const categoriesEndPoint = `${ip}:${mainPort}/categories`
-export const requestsEndPoint = `${ip}:${mainPort}/requests`
-export const requestsUpdateEndPoint = `${ip}:${mainPort}/requests/update`
-export const imageSendEndPoint = `${ip}:${mainPort}/images`
-export const imgEndPoint = `${ip}:${imgPort}/img-cloning`
+const ip = 'https://legaltechmap.ru'
+const apiRoute = '/api'
+export const projectsEndPoint = `${ip}${apiRoute}/companies`
+export const categoriesEndPoint = `${ip}${apiRoute}/categories`
+export const requestsEndPoint = `${ip}${apiRoute}/requests`
+export const requestsUpdateEndPoint = `${ip}${apiRoute}/requests/update`
+export const imageSendEndPoint = `${ip}${apiRoute}/images`
+export const imgEndPoint = `${ip}/img-cloning`

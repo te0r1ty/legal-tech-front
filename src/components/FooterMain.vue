@@ -7,7 +7,6 @@
         является рекламой или публичной офертой.
       </p>
       <img class="logo" src="@/assets/pictures/logo.svg" alt="LT_LOGO_SVG" />
-      <img class="vk-link" src="@/assets/pictures/vk-logo.svg" alt="VK_LINK_IMG" />
       <a href="mailto:info@legaltechmap.ru"> <p class="mail">info@legaltechmap.ru</p></a>
     </div>
     <p class="copyright">Copyright © 2024 Карта российского LegalTech</p>
@@ -42,19 +41,12 @@
   height: fit-content;
   width: 1.6em;
 }
-.vk-link {
-  position: absolute;
-  top: 31px;
-  right: 4%;
-  height: fit-content;
-  width: 1.3em;
-}
 .mail {
   position: absolute;
   width: fit-content;
   height: 1.2rem;
   top: 40px;
-  right: 13%;
+  right: 5%;
   color: white;
   font-size: 1.2rem;
   margin: 0;

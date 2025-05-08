@@ -14,10 +14,19 @@
       />
     </transition>
     <h1 class="projects-head1">ПРОЕКТЫ</h1>
-    <p class="prj-count">ВСЕГО ПРОЕКТОВ: {{ projects.length }}</p>
+    <div class="settings-wrap additional-margin">
+      <p class="prj-count">ВСЕГО ПРОЕКТОВ: {{ projects.length }}</p>
+      <textarea v-model="textFilter" class="filter textarea-width"> </textarea
+      ><img
+        @click="applyFilters"
+        class="search-btn"
+        src="@/assets/pictures/search.png"
+        alt="search-btn"
+      />
+    </div>
     <div class="settings-wrap">
-      <p class="settings-wrap__txt">ПРОЕКТОВ В ВЫБРАННОЙ КАТЕГОРИИ: {{ showingProjects.length }}</p>
-      <select class="filter" v-model="chosenFilter">
+      <p class="settings-wrap__txt">ПРОЕКТОВ В ВЫБРАННЫХ ФИЛЬТРАХ: {{ showingProjects.length }}</p>
+      <select class="filter filter-width" v-model="chosenFilter">
         <option class="opt" v-for="opt in selectSphereMenu" :key="opt.id" :value="opt.id">
           {{ opt.name }}
         </option>
@@ -83,6 +92,7 @@ const fetchData = async () => {
 
 fetchData()
 
+const textFilter = ref('')
 const chosenFilter = ref(0)
 const modalVisible = ref(false)
 const msgForModal = ref({
@@ -94,15 +104,30 @@ const msgForModal = ref({
   additional: '',
 })
 
-watch(chosenFilter, () => {
-  if (chosenFilter.value === 0) {
+function applyFilters() {
+  if (chosenFilter.value === 0 && textFilter.value != '') {
+    showingProjects.value = projects.filter((project) =>
+      project.name.toLowerCase().includes(textFilter.value.toLowerCase()),
+    )
+  } else if (chosenFilter.value === 0) {
     showingProjects.value = projects
   } else {
+    if (!(textFilter.value === '')) {
+      showingProjects.value = projects.filter(
+        (project) =>
+          project.sphere === selectSphereMenu.value[chosenFilter.value].name &&
+          project.name.toLowerCase().includes(textFilter.value.toLowerCase()),
+      )
+      return
+    }
+
     showingProjects.value = projects.filter(
       (project) => project.sphere === selectSphereMenu.value[chosenFilter.value].name,
     )
   }
-})
+}
+
+watch(chosenFilter, applyFilters)
 
 function showModal(id: number) {
   const infoPackForModal = projects[id]
@@ -131,8 +156,31 @@ function closeModal() {
 </script>
 
 <style scoped lang="scss">
-.prj-count {
+.search-btn {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  right: 5px;
+  cursor: pointer;
+}
+.filter-width {
+  padding: 5px 5px;
+  font-size: 17px;
+  height: 60px;
+  width: clamp(100px, 39vw, 700px);
+}
+.textarea-width {
+  padding: 20px 60px 20px 5px;
+  font-size: 17px;
+  height: 18px;
+  width: clamp(100px, 39vw, 633px);
+  overflow: hidden;
+}
+.additional-margin {
+  position: relative;
   margin-top: 376px;
+}
+.prj-count {
   font-size: 28px;
 }
 .opt {
@@ -144,12 +192,8 @@ function closeModal() {
   border-width: 1px;
   border-color: #5574f8;
   border-style: solid;
-  width: clamp(100px, 39vw, 700px);
-  height: 60px;
-  font-size: 17px;
   letter-spacing: 0.05em;
   resize: none;
-  padding: 5px 5px;
 }
 .modal {
   z-index: 99999;

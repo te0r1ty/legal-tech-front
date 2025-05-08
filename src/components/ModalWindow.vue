@@ -17,7 +17,7 @@
           </div>
           <div class="flex-wrap110">
             <p class="modal-card-name">Год запуска</p>
-            <p class="modal-card modal-card__years">Запустился в {{ props.years }} году</p>
+            <p class="modal-card modal-card__years">{{ props.years }}</p>
           </div>
           <div class="flex-wrap110">
             <p class="modal-card-name">Ссылка на проект</p>
