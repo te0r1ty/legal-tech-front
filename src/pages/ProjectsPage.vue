@@ -140,7 +140,6 @@ function showModal(id: number) {
     additional: infoPackForModal.additional,
   }
   modalVisible.value = true
-  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 function closeModal() {
   modalVisible.value = false
@@ -197,6 +196,8 @@ function closeModal() {
 }
 .modal {
   z-index: 99999;
+  max-height: calc(100vh);
+  overflow-y: auto;
 }
 .settings-wrap {
   width: 100%;

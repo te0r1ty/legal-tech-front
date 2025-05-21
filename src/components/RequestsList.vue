@@ -15,65 +15,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import RequestListItem from './RequestListItem.vue'
-import { requestsEndPoint } from '@/constants/api-links'
-interface Request {
-  additionalInfo: string
-  category: string
-  createdAt: string
-  description: string
-  id: number
-  imagePath: string
-  linkToProject: string
-  name: string
-  status: string
-  yearOfLaunch: number
-}
+import { useRequestsStore } from '@/stores/requestsStore'
 
-interface apiResponse {
-  additionalInfo: string
-  category: { name: string }
-  createdAt: string
-  description: string
-  id: number
-  imagePath: string
-  linkToProject: string
-  name: string
-  status: string
-  yearOfLaunch: number
-}
-
-const requests = ref<Request[]>([])
-const fetchRequests = async () => {
-  try {
-    const response = await fetch(requestsEndPoint, {
-      method: 'GET',
-      headers: {
-        Authorization: 'Basic ' + btoa('holger:QU11OWIz'),
-      },
-    })
-    if (!response.ok) {
-      throw new Error('Failed to fetch requests')
-    }
-    const data = await response.json()
-    requests.value = data.map((item: apiResponse) => ({
-      additionalInfo: item.additionalInfo,
-      category: item.category.name,
-      createdAt: item.createdAt,
-      description: item.description,
-      id: item.id,
-      imagePath: item.imagePath,
-      linkToProject: item.linkToProject,
-      name: item.name,
-      status: item.status,
-      yearOfLaunch: item.yearOfLaunch,
-    }))
-  } catch (error) {
-    console.error('Error fetching requests:', error)
-  }
-}
-fetchRequests()
+useRequestsStore().fetchRequests()
+const requests = useRequestsStore().requests
 </script>
 
 <style scoped lang="scss">

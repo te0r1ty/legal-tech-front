@@ -1,5 +1,6 @@
 import { defineAsyncComponent, h, markRaw, type Component } from 'vue'
 import RequestsList from '@/components/RequestsList.vue'
+import ProjectsList from '@/components/ProjectsList.vue'
 
 const PlaceholderComponent = (name: string): Component =>
   markRaw(
@@ -26,7 +27,7 @@ export const NAV_LINKS: readonly AdminMenuLink[] = [
   },
   {
     label: 'Редактировать проекты',
-    component: PlaceholderComponent('Редактировать проекты'),
+    component: markRaw(ProjectsList),
   },
   {
     label: 'Редактировать методологию',

@@ -1,10 +1,11 @@
 <template>
   <svg
-    width="1900"
+    width="1330"
     height="1100"
     viewBox="0 0 1330 1100"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    overflow="visible"
   >
     <circle cx="646" cy="569" r="395" stroke="#EEF1FE" stroke-width="10" />
     <path

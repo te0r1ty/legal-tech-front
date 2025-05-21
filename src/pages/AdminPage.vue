@@ -16,8 +16,9 @@
               @click="selectedModule = pair.component"
             >
               {{ pair.label }}
-              <!--TODO Тут нужен счётчик заявок-->
-              <span v-if="pair.label === 'Одобрить запросы'" class="badge">32</span>
+              <span v-if="pair.label === 'Одобрить запросы'" class="badge">{{
+                useRequestsStore().totalRequests
+              }}</span>
             </li>
           </ul>
         </nav>
@@ -35,9 +36,10 @@
 <script setup lang="ts">
 import FadeLayout from '@/components/layout/FadeLayout.vue'
 import { NAV_LINKS } from '@/constants/admin-menu'
+import { useRequestsStore } from '@/stores/requestsStore'
 import { ref } from 'vue'
-const navLinks = NAV_LINKS
 
+const navLinks = NAV_LINKS
 const selectedModule = ref(navLinks[0].component)
 </script>
 
@@ -118,7 +120,7 @@ const selectedModule = ref(navLinks[0].component)
 }
 .admin-menu {
   width: 26%;
-  height: 600px;
+  height: fit-content;
   background: #e5e5e5;
   border-radius: 8px;
   padding: 20px;

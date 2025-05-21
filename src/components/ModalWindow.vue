@@ -85,7 +85,6 @@ const props = defineProps({
   padding: 0.5rem;
   margin: 0;
   color: black;
-  position: relative;
 
   &__sphere {
     height: fit-content;
@@ -169,7 +168,7 @@ const props = defineProps({
 .modal-shade {
   top: 0;
   left: 0;
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 1000%;
   background-color: rgb(0, 0, 0, 0.5);
