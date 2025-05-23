@@ -2,33 +2,22 @@
   <div class="list-item-border list-item-wrap">
     <img class="logo" :src="props.fullImgLink" alt="LegalTech" />
     <p class="name">{{ props.name }}</p>
-    <div class="btn edit-btn">Редактировать</div>
-    <div @click="showDelete" v-if="!deleteStart && !editStart" class="btn delete-btn">Удалить</div>
-    <div class="list-item-wrap" v-if="deleteStart && !editStart">
-      <div class="btn-wrap">
-        <div class="btn edit-btn">Да</div>
-        <p class="name-approve">Точно удалить проект?</p>
-        <div @click="showDelete" class="btn delete-btn">Нет</div>
-      </div>
-    </div>
+    <div @click="clicked()" class="btn edit-btn">Редактировать</div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-
 const props = defineProps({
   fullImgLink: String,
   name: String,
+  id: Number,
 })
 
-const deleteStart = ref(false)
-const editStart = ref(false)
+const emits = defineEmits(['msgForModal'])
 
-const showDelete = () => {
-  deleteStart.value = !deleteStart.value
+function clicked() {
+  emits('msgForModal', props.id)
 }
-//const emits = defineEmits<{}>();
 </script>
 
 <style scoped lang="scss">

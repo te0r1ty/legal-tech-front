@@ -5,7 +5,6 @@
         <span></span>
         <button class="close-btn" @click="$emit('closeButtonTriggered')">x</button>
       </div>
-      <!-- TODO Переделать под окно в фигме -->
       <div class="modal-frame">
         <div class="modal-content-wrap">
           <p class="modal-name">{{ props.name }}</p>
@@ -97,7 +96,6 @@ const props = defineProps({
     width: 100%;
   }
 
-  //TODO Сделать укороченную ссылку
   &__link {
     display: block;
     transition: all 0.2s;
@@ -170,7 +168,7 @@ const props = defineProps({
   left: 0;
   position: fixed;
   width: 100%;
-  height: 1000%;
+  height: 100%;
   background-color: rgb(0, 0, 0, 0.5);
 }
 

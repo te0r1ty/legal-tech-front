@@ -3,9 +3,7 @@
     <h1 class="admin-head1">ЛИЧНЫЙ КАБИНЕТ</h1>
     <div class="admin-container">
       <div class="admin-menu">
-        <!--TODO Оформить место под аватарку-->
-        <div class="pfp"></div>
-        <p class="admin-name">Хольгер Цшайге</p>
+        <p class="admin-name">Меню</p>
         <nav>
           <ul class="list">
             <li
@@ -20,6 +18,7 @@
                 useRequestsStore().totalRequests
               }}</span>
             </li>
+            <li @click="doLogout" class="menu-item">Выйти</li>
           </ul>
         </nav>
       </div>
@@ -34,13 +33,20 @@
 </template>
 
 <script setup lang="ts">
+import { logout } from '@/auth/authService'
 import FadeLayout from '@/components/layout/FadeLayout.vue'
 import { NAV_LINKS } from '@/constants/admin-menu'
+import router from '@/router'
 import { useRequestsStore } from '@/stores/requestsStore'
 import { ref } from 'vue'
 
 const navLinks = NAV_LINKS
 const selectedModule = ref(navLinks[0].component)
+
+function doLogout() {
+  logout()
+  router.push({ name: 'home' })
+}
 </script>
 
 <style scoped lang="scss">
@@ -52,7 +58,6 @@ const selectedModule = ref(navLinks[0].component)
 }
 .content {
   width: 65%;
-  // TODO Плавное изменение высоты
   height: fit-content;
   transition: height 0.2s ease-in-out;
   background: #f5f5f5;
@@ -94,23 +99,6 @@ const selectedModule = ref(navLinks[0].component)
     &::before {
       width: 100%;
     }
-  }
-}
-.pfp {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  background: white;
-  border: 2px solid #ccc;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 10px;
-
-  &::before {
-    content: '👤'; /* Placeholder */
-    font-size: 40px;
-    color: #4a4a4a;
   }
 }
 .admin-name {

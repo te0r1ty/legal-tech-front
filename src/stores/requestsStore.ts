@@ -1,35 +1,42 @@
+import { getToken } from '@/auth/authService'
 import { requestsEndPoint } from '@/constants/api-links'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
-interface Request {
+export interface RequestData {
   additionalInfo: string
-  category: string
+  categoryId: number
   createdAt: string
+  contacts: string
   description: string
+  owner: string
   id: number
   imagePath: string
   linkToProject: string
   name: string
   status: string
+  requestType: string
   yearOfLaunch: number
 }
 
 interface apiResponse {
   additionalInfo: string
-  category: { name: string }
+  category: { id: number; name: string }
   createdAt: string
   description: string
+  founder: string
+  contacts: string
   id: number
   imagePath: string
   linkToProject: string
   name: string
   status: string
+  requestType: string
   yearOfLaunch: number
 }
 
 export const useRequestsStore = defineStore('requests', () => {
-  const requests = ref<Request[]>([])
+  const requests = ref<RequestData[]>([])
   let fetched = false
 
   function fetchRequests() {
@@ -40,7 +47,7 @@ export const useRequestsStore = defineStore('requests', () => {
         const response = await fetch(requestsEndPoint, {
           method: 'GET',
           headers: {
-            Authorization: 'Basic ' + btoa('holger:QU11OWIz'),
+            Authorization: 'Bearer ' + getToken(),
           },
         })
 
@@ -52,14 +59,17 @@ export const useRequestsStore = defineStore('requests', () => {
         data.forEach((request: apiResponse) => {
           requests.value.push({
             additionalInfo: request.additionalInfo,
-            category: request.category.name,
+            categoryId: request.category.id,
             createdAt: request.createdAt,
+            contacts: request.contacts,
+            owner: request.founder,
             description: request.description,
             id: request.id,
             imagePath: request.imagePath,
             linkToProject: request.linkToProject,
             name: request.name,
             status: request.status,
+            requestType: request.requestType,
             yearOfLaunch: request.yearOfLaunch,
           })
         })
@@ -83,5 +93,15 @@ export const useRequestsStore = defineStore('requests', () => {
     return requests.value.length
   })
 
-  return { requests, fetchRequests, totalRequests }
+  const getRequestById = computed(() => {
+    return (id: number) => requests.value.find((request) => request.id === id) as RequestData
+  })
+
+  function refreshStore() {
+    fetched = false
+    requests.value = []
+    fetchRequests()
+  }
+
+  return { requests, fetchRequests, refreshStore, totalRequests, getRequestById }
 })

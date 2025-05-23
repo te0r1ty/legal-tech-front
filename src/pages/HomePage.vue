@@ -51,7 +51,6 @@
         </a>
       </div>
     </div>
-    <!--<img class="add-palceholder" src="@/assets/pictures/заплатка.png" alt="add-placeholder" />-->
   </div>
 </template>
 
@@ -85,7 +84,6 @@ function showModal(id: number) {
     additional: infoPackForModal.additional,
   }
   modalVisible.value = true
-  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 function closeModal() {
   modalVisible.value = false
@@ -97,13 +95,14 @@ function closeModal() {
     description: '',
     additional: '',
   }
-  window.scrollTo({ top: 800, behavior: 'smooth' })
 }
 </script>
 
 <style scoped lang="scss">
 .modal {
   z-index: 99999;
+  max-height: calc(100vh);
+  overflow-y: auto;
 }
 .map {
   width: 100%;

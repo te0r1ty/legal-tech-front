@@ -6,3 +6,4 @@ export const requestsEndPoint = `${ip}${apiRoute}/requests`
 export const requestsUpdateEndPoint = `${ip}${apiRoute}/requests/update`
 export const imageSendEndPoint = `${ip}${apiRoute}/images`
 export const imgEndPoint = `${ip}/img-cloning`
+export const authEndPoint = `${ip}${apiRoute}/auth/login`

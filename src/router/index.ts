@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Homepage from '@/pages/HomePage.vue'
+import { authGuard } from '@/auth/authGuard'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,7 +7,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: Homepage,
+      component: () => import('@/pages/HomePage.vue'),
     },
     {
       path: '/methods',
@@ -33,11 +33,17 @@ const router = createRouter({
       path: '/admin',
       name: 'Личный кабинет',
       component: () => import('@/pages/AdminPage.vue'),
+      beforeEnter: authGuard,
     },
     {
       path: '/cookies',
       name: 'Политика обработки персональных данных',
       component: () => import('@/pages/CookiesPage.vue'),
+    },
+    {
+      path: '/login',
+      name: 'Вход',
+      component: () => import('@/pages/LoginPage.vue'),
     },
   ],
 })

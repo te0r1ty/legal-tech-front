@@ -6,19 +6,21 @@ export interface Prj {
   id: number
   name: string
   sphere: string
+  sphereId: number
   years: number
   link: string
   description: string
   additional: string
   imgurl: string
   owner: string
+  originalId: number
   contacts: string
 }
 
 interface PrjServerResponse {
   id: number
   name: string
-  category: { name: string }
+  category: { id: number; name: string }
   yearOfLaunch: number
   linkToProject: string
   description: string
@@ -39,9 +41,7 @@ export const useProjectsStore = defineStore('projects', () => {
     const apiRequest = async () => {
       try {
         const response = await fetch(projectsEndPoint, {
-          headers: {
-            Authorization: 'Basic ' + btoa('holger:QU11OWIz'),
-          },
+          method: 'GET',
         })
 
         if (!response.ok) {
@@ -52,8 +52,10 @@ export const useProjectsStore = defineStore('projects', () => {
         data.forEach((project: PrjServerResponse, index: number) => {
           projects.value.push({
             id: index,
+            originalId: project.id,
             name: project.name,
             sphere: project.category.name,
+            sphereId: project.category.id,
             years: project.yearOfLaunch,
             link: project.linkToProject,
             description: project.description,
@@ -69,6 +71,7 @@ export const useProjectsStore = defineStore('projects', () => {
           if (b.years === null) return -1
           return a.years - b.years
         })
+
         projects.value.forEach((project, index) => (project.id = index))
       } catch (error) {
         console.error('Error fetching projects:', error)
@@ -91,8 +94,14 @@ export const useProjectsStore = defineStore('projects', () => {
   })
 
   const getProjectById = computed(() => {
-    return (id: number) => projects.value.find((project) => project.id === id)
+    return (id: number) => projects.value.find((project) => project.id === id) as Prj
   })
 
-  return { projects, fetchProjects, projectsNamesAndIds, getProjectById }
+  function refreshStore() {
+    fetched = false
+    projects.value = []
+    fetchProjects()
+  }
+
+  return { projects, fetchProjects, refreshStore, projectsNamesAndIds, getProjectById }
 })
