@@ -160,7 +160,7 @@ function clicked(id: number) {
   font-weight: small;
   fill: black;
   paint-order: stroke;
-  stroke: white;
+  stroke: #f4f4f8;
   stroke-width: 5;
   stroke-linecap: round;
   stroke-linejoin: round;

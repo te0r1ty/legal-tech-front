@@ -148,19 +148,17 @@
   font-size: 56px;
 }
 .methods-head2 {
-  margin: 0;
-  margin-top: 362px;
+  margin-top: 80px;
   font-weight: normal;
   font-size: 60px;
 }
 .methods-head1 {
-  padding-top: 162px;
   margin: 0 auto;
   text-align: left;
   margin: 0;
   font-size: 80px;
 }
 .methods-wrap {
-  margin: 80px 8.3% 0 8.3%;
+  margin: 60px 8.3% 0 8.3%;
 }
 </style>

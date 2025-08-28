@@ -38,7 +38,8 @@ function clicked() {
 .card-wrap {
   border: solid;
   border-width: 3px;
-  border-color: #5574f830;
+  border-color: #ffffff00;
+  background-color: white;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -52,8 +53,8 @@ function clicked() {
   cursor: pointer;
 
   &:hover {
-    box-shadow: 0px 0px 20px 0px #0031b8;
-    border-color: #5574f8;
+    box-shadow: 0px 0px 20px 0px #0031b8d3;
+    border-color: #5573f8c4;
   }
 }
 </style>

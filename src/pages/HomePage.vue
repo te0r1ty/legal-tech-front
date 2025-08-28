@@ -13,8 +13,10 @@
         :additional="msgForModal.additional"
       />
     </transition>
-    <h1 class="home-head1">КАРТА<br />РОССИЙСКОГО<br />LEGALTECH</h1>
-    <h3 class="home-head3">Все решения для автоматизации работы юристов на одной карте</h3>
+    <div class="home-header-wrapper">
+      <h1 class="home-head1">КАРТА РОССИЙСКОГО<br />LEGALTECH</h1>
+      <h3 class="home-head3">Все решения для автоматизации работы юристов на одной карте</h3>
+    </div>
     <MapComponent class="map" @msg-for-modal="showModal" />
     <div class="content">
       <div class="content__col1 content__padd">
@@ -108,22 +110,28 @@ function closeModal() {
   width: 100%;
   scale: 0.9;
   position: relative;
-  top: 4%;
   left: 52%;
   translate: -50%;
 }
 .home-wrap {
   margin: 80px 8.3% 0 8.3%;
 }
+.home-header-wrapper {
+  width: 100%;
+  display: flex;
+}
 .home-head1 {
-  padding-top: 70px;
+  flex: 3 3 0;
   margin: 0 auto;
   text-align: left;
   margin: 0;
   font-size: 80px;
+  letter-spacing: 0.05em;
 }
 .home-head3 {
-  font-size: 18px;
+  flex: 1 1 0;
+  font-size: 29px;
+  font-weight: 400;
 }
 
 .content {

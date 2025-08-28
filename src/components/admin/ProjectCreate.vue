@@ -110,7 +110,6 @@
       </transition>
     </div>
     <button @click.prevent="submit" class="submit">Добавить проект</button>
-    <div v-if="created">создалось</div>
   </div>
 </template>
 
@@ -303,8 +302,6 @@ const sendImage = async () => {
     console.error('Error sending image:', error)
   }
 }
-
-const created = ref(false)
 const submit = (event: Event) => {
   if (!validateForm()) {
     event.preventDefault()
@@ -313,8 +310,6 @@ const submit = (event: Event) => {
 
   sendForm()
   sendImage()
-
-  created.value = true
 }
 </script>
 

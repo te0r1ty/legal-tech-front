@@ -1,6 +1,6 @@
 <template>
   <div class="projects-wrap">
-    <transition name="fade" appear>
+    <transition name="fade-modal" appear>
       <ModalWindow
         class="modal"
         @close-button-triggered="closeModal"
@@ -13,25 +13,30 @@
         :additional="msgForModal.additional"
       />
     </transition>
-    <h1 class="projects-head1">ПРОЕКТЫ</h1>
+    <h1 class="projects-head1">
+      ПРОЕКТЫ <span class="total">(всего {{ projects.length }})</span>
+    </h1>
     <div class="settings-wrap additional-margin">
-      <p class="prj-count">ВСЕГО ПРОЕКТОВ: {{ projects.length }}</p>
-      <textarea v-model="textFilter" class="filter textarea-width"> </textarea
-      ><img
-        @click="applyFilters"
-        class="search-btn"
-        src="@/assets/pictures/search.png"
-        alt="search-btn"
-      />
-    </div>
-    <div class="settings-wrap">
-      <p class="settings-wrap__txt">ПРОЕКТОВ В ВЫБРАННЫХ ФИЛЬТРАХ: {{ showingProjects.length }}</p>
+      <div style="width: 49%; display: flex">
+        <textarea
+          v-model="textFilter"
+          class="filter textarea-width"
+          placeholder="Наименование проекта"
+        ></textarea>
+        <img
+          @click="applyFilters"
+          class="search-btn"
+          src="@/assets/pictures/search.svg"
+          alt="search-btn"
+        />
+      </div>
       <select class="filter filter-width" v-model="chosenFilter">
         <option class="opt" v-for="opt in selectSphereMenu" :key="opt.id" :value="opt.id">
           {{ opt.name }}
         </option>
       </select>
     </div>
+    <p class="settings-wrap__txt">ПРОЕКТОВ В ВЫБРАННЫХ ФИЛЬТРАХ: {{ showingProjects.length }}</p>
     <div class="list-wrap">
       <ProjectCard
         @msg-for-modal="showModal"
@@ -155,44 +160,50 @@ function closeModal() {
 </script>
 
 <style scoped lang="scss">
+.total {
+  font-size: 30px;
+  font-weight: 100;
+  color: #b5b5b5;
+}
 .search-btn {
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  right: 5px;
+  position: relative;
+  width: 35px;
+  right: 50px;
   cursor: pointer;
+  z-index: 99;
 }
 .filter-width {
   padding: 5px 5px;
   font-size: 17px;
   height: 60px;
-  width: clamp(100px, 39vw, 700px);
+  width: 49%;
 }
 .textarea-width {
   padding: 20px 60px 20px 5px;
   font-size: 17px;
   height: 18px;
-  width: clamp(100px, 39vw, 633px);
+  width: 100%;
+  // width: clamp(100px, 39vw, 633px);
   overflow: hidden;
 }
 .additional-margin {
-  position: relative;
-  margin-top: 376px;
-}
-.prj-count {
-  font-size: 28px;
+  margin-top: 40px;
 }
 .opt {
   width: 39em;
 }
 .filter {
-  background-color: #d9d9d9;
+  background-color: #ffffff;
   border-radius: 4px;
   border-width: 1px;
-  border-color: #5574f8;
+  border-color: #dadada;
   border-style: solid;
   letter-spacing: 0.05em;
   resize: none;
+
+  &:focus {
+    outline-color: #5573f89c;
+  }
 }
 .modal {
   z-index: 99999;
@@ -202,12 +213,13 @@ function closeModal() {
 .settings-wrap {
   width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 30px;
 
   &__txt {
     font-size: 28px;
+    margin: 50px 0;
   }
 }
 .list-wrap {
@@ -218,26 +230,24 @@ function closeModal() {
   margin-bottom: 100px;
 }
 .projects-head1 {
-  padding-top: 162px;
   margin: 0 auto;
   text-align: left;
-  margin: 0;
   font-size: 80px;
 }
 .projects-wrap {
-  margin: 80px 8.3% 0 8.3%;
+  margin: 60px 8.3% 0 8.3%;
 }
 
-.fade-enter-active,
-.fade-leave-active {
+.fade-modal-enter-active,
+.fade-modal-leave-active {
   transition: opacity 0.3s ease;
 }
-.fade-enter-from,
-.fade-leave-to {
+.fade-modal-enter-from,
+.fade-modal-leave-to {
   opacity: 0;
 }
-.fade-enter-to,
-.fade-leave-from {
+.fade-modal-enter-to,
+.fade-modal-leave-from {
   opacity: 1;
 }
 </style>

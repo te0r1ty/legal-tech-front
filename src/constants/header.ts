@@ -5,19 +5,19 @@ interface HeaderLink {
 
 export const NAV_LINKS: readonly HeaderLink[] = [
   {
-    label: 'КАРТА',
+    label: 'Карта',
     link: '/',
   },
   {
-    label: 'МЕТОДОЛОГИЯ',
+    label: 'Методолгия',
     link: '/methods',
   },
   {
-    label: 'ПРОЕКТЫ',
+    label: 'Проекты',
     link: '/projects',
   },
   {
-    label: 'ДОБАВИТЬ ПРОЕКТ',
+    label: 'Добавить проект',
     link: '/offer',
   },
 ]

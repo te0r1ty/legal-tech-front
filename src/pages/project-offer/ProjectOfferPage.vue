@@ -513,10 +513,8 @@ watch(
 }
 
 .projectoffer-head1 {
-  padding-top: 162px;
   margin: 0 auto;
   text-align: left;
-  margin: 0;
   font-size: 80px;
 }
 .offer-wrap {
@@ -554,7 +552,7 @@ watch(
 }
 
 .slider-wrap {
-  margin-top: 376px;
+  margin-top: 80px;
   height: 50px;
 }
 .switch {

@@ -1,7 +1,10 @@
 <template>
   <header class="header-main">
     <nav class="nav">
-      <img class="logo" src="@/assets/pictures/logo.svg" alt="Логотип LegalTech Карты" />
+      <div class="logo-wrap">
+        <img class="logo-icon" src="@/assets/pictures/logo2.svg" alt="Логотип LegalTech Карты" />
+        <p class="logo-text">LEGALTECH.<span style="color: white">КАРТА</span></p>
+      </div>
       <ul class="nav__list">
         <li class="list-el" v-for="pair in navLinks" :key="pair.label">
           <RouterLink class="nav__link" :to="pair.link">
@@ -32,15 +35,17 @@ const navLinks = NAV_LINKS
 .nav {
   display: flex;
   justify-content: space-between;
+  background-color: #5574f8;
+  border-radius: 10px;
   height: 60px;
 
   &__list {
     display: flex;
-    justify-content: space-between;
+    gap: 35px;
     list-style: none;
-    margin: 0;
+    margin: 0 26px;
     padding: 0;
-    width: 700px;
+    width: fit-content;
   }
 
   &__link {
@@ -49,26 +54,38 @@ const navLinks = NAV_LINKS
     top: 10px;
     font-size: 20px;
     text-decoration: none;
-    color: black;
+    color: white;
 
     &::before {
       content: '';
-      transition: all 0.2s ease-in-out;
+      transition: width 0.2s ease-in-out;
       position: absolute;
       left: 0;
       right: 0;
       bottom: -3px;
       height: 2px;
       width: 0;
-      background: var(--main-color);
+      background: white;
     }
 
     &:hover {
-      color: var(--hover-underline-color);
       &::before {
         width: 100%;
       }
     }
   }
+}
+.logo-wrap {
+  display: flex;
+  height: 60%;
+  margin: auto 26px;
+}
+.logo-icon {
+  height: 100%;
+}
+.logo-text {
+  margin: auto 10px;
+  font-size: 18px;
+  font-weight: bold;
 }
 </style>
