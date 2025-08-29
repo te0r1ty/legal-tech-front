@@ -1,7 +1,7 @@
 <template>
   <div class="offer-wrap">
     <!--TODO Вынести в компоненты всё че можно-->
-    <h1 class="projectoffer-head1">ФОРМА ЗАЯВКИ</h1>
+    <h1 class="projectoffer-head1">РЕДАКТИРОВАТЬ КАРТУ</h1>
     <div class="slider-wrap">
       <label class="switch" for="checkbox">
         <input v-model="form.editProject" type="checkbox" id="checkbox" />

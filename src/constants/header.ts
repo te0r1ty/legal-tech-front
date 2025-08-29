@@ -17,7 +17,7 @@ export const NAV_LINKS: readonly HeaderLink[] = [
     link: '/projects',
   },
   {
-    label: 'Добавить проект',
+    label: 'Редактировать карту',
     link: '/offer',
   },
 ]

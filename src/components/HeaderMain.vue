@@ -3,7 +3,9 @@
     <nav class="nav">
       <div class="logo-wrap">
         <img class="logo-icon" src="@/assets/pictures/logo2.svg" alt="Логотип LegalTech Карты" />
-        <p class="logo-text">LEGALTECH.<span style="color: white">КАРТА</span></p>
+        <p class="logo-text">
+          LEGALTECH.<span style="color: white; padding: 0; margin: 0">КАРТА</span>
+        </p>
       </div>
       <ul class="nav__list">
         <li class="list-el" v-for="pair in navLinks" :key="pair.label">
@@ -27,7 +29,7 @@ const navLinks = NAV_LINKS
   position: relative;
 }
 .header-main {
-  width: 85%;
+  width: 83.5%;
   height: 60px;
   margin: 40px 8.3% 0 8.3%;
 }

@@ -30,7 +30,7 @@
           alt="search-btn"
         />
       </div>
-      <select class="filter filter-width" v-model="chosenFilter">
+      <select class="filter filter-width select-arrow" v-model="chosenFilter">
         <option class="opt" v-for="opt in selectSphereMenu" :key="opt.id" :value="opt.id">
           {{ opt.name }}
         </option>
@@ -160,6 +160,13 @@ function closeModal() {
 </script>
 
 <style scoped lang="scss">
+.select-arrow {
+  appearance: none;
+  background-image: url('@/assets/pictures/select-arrow.svg');
+  background-repeat: no-repeat;
+  background-position-x: 99.5%;
+  background-position-y: 49%;
+}
 .total {
   font-size: 30px;
   font-weight: 100;
@@ -183,7 +190,6 @@ function closeModal() {
   font-size: 17px;
   height: 18px;
   width: 100%;
-  // width: clamp(100px, 39vw, 633px);
   overflow: hidden;
 }
 .additional-margin {
