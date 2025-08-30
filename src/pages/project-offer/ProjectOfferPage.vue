@@ -10,136 +10,158 @@
       <p class="slider-text slider-text__add">ДОБАВИТЬ ПРОЕКТ</p>
       <p class="slider-text slider-text__edit">ИЗМЕНИТЬ СВЕДЕНИЯ</p>
     </div>
-    <div class="form">
-      <div class="form__wrap flexsame" v-if="!form.editProject">
-        <p class="form__name">Наименование Legaltech-проекта</p>
-        <textarea class="form-textarea" v-model="form.projectName"></textarea>
-        <transition name="fade" appear>
-          <p v-if="errors.projectName" class="error">
-            {{ errors.projectName }}
+    <div class="img-form-wrap">
+      <div class="img-btn-wrap">
+        <!--TODO добавить отображение загруженного лого-->
+        <label class="img-btn-lbl" for="upload-image-btn">{{ labelText }}</label>
+        <input
+          class="img-btn"
+          @change="onFileChange"
+          type="file"
+          accept="image/jpeg, image/png, image/jpg"
+          id="upload-image-btn"
+        />
+        <transition class="img-btn-err" name="fade" appear>
+          <p v-if="errors.imageName" class="error">
+            {{ errors.imageName }}
           </p>
         </transition>
       </div>
+      <div class="form-wrap">
+        <div class="form">
+          <div class="flexsame" v-if="!form.editProject">
+            <textarea
+              class="form-textarea"
+              placeholder="Наименование Legaltech-проекта"
+              v-model="form.projectName"
+            ></textarea>
+            <transition name="fade" appear>
+              <p v-if="errors.projectName" class="error">
+                {{ errors.projectName }}
+              </p>
+            </transition>
+          </div>
 
-      <div class="form__wrap flexsame" v-if="form.editProject">
-        <p class="form__name">Выберите проект</p>
-        <select class="form__input form__select" v-model="form.editedProjectId">
-          <option class="opt" value="-1" disabled>Выберите проект</option>
-          <option
-            class="opt"
-            v-for="pair in projectsStore.projectsNamesAndIds"
-            :key="pair.id"
-            :value="pair.id"
-          >
-            {{ pair.name }}
-          </option>
-        </select>
-        <transition name="fade" appear>
-          <p v-if="errors.editedProjectId" class="error sphere-error">
-            {{ errors.editedProjectId }}
-          </p>
-        </transition>
-      </div>
+          <div class="flexsame" v-if="form.editProject">
+            <select class="form__input form__select select-arrow" v-model="form.editedProjectId">
+              <option class="opt" value="-1" disabled>Выберите проект</option>
+              <option
+                class="opt"
+                v-for="pair in projectsStore.projectsNamesAndIds"
+                :key="pair.id"
+                :value="pair.id"
+              >
+                {{ pair.name }}
+              </option>
+            </select>
+            <transition name="fade" appear>
+              <p v-if="errors.editedProjectId" class="error sphere-error">
+                {{ errors.editedProjectId }}
+              </p>
+            </transition>
+          </div>
 
-      <div class="form__wrap flexsame">
-        <p class="form__name">Сфера Legaltech-проекта</p>
-        <select class="form__input form__select" v-model="form.sphere">
-          <option class="opt" v-for="opt in selectSphereMenu" :key="opt.id" :value="opt.id">
-            {{ opt.name }}
-          </option>
-        </select>
-        <transition name="fade" appear>
-          <p v-if="errors.sphere" class="error sphere-error">
-            {{ errors.sphere }}
-          </p>
-        </transition>
-      </div>
+          <div class="flexsame">
+            <select class="form__input form__select select-arrow" v-model="form.sphere">
+              <option class="opt" value="-1" disabled>Сфера Legaltech-проекта</option>
+              <option class="opt" v-for="opt in selectSphereMenu" :key="opt.id" :value="opt.id">
+                {{ opt.name }}
+              </option>
+            </select>
+            <transition name="fade" appear>
+              <p v-if="errors.sphere" class="error sphere-error">
+                {{ errors.sphere }}
+              </p>
+            </transition>
+          </div>
 
-      <div class="flexsame">
-        <p class="form__name">Год запуска проекта</p>
-        <select class="form__input form__select" v-model="form.year">
-          <option class="opt" v-for="year in selectYearMenu" :key="year" :value="year">
-            {{ year }}
-          </option>
-        </select>
-        <transition name="fade" appear>
-          <p v-if="errors.year" class="error sphere-error">
-            {{ errors.year }}
-          </p>
-        </transition>
+          <div class="flexsame">
+            <select class="form__input form__select select-arrow" v-model="form.year">
+              <option class="opt" value="-1" disabled>Год запуска проекта</option>
+              <option class="opt" v-for="year in selectYearMenu" :key="year" :value="year">
+                {{ year }}
+              </option>
+            </select>
+            <transition name="fade" appear>
+              <p v-if="errors.year" class="error sphere-error">
+                {{ errors.year }}
+              </p>
+            </transition>
+          </div>
+        </div>
+
+        <div class="form">
+          <div class="flexsame">
+            <textarea
+              class="form-textarea"
+              placeholder="Владелец/разработчик продукта"
+              v-model="form.owner"
+            ></textarea>
+            <transition name="fade" appear>
+              <p v-if="errors.owner" class="error">
+                {{ errors.owner }}
+              </p>
+            </transition>
+          </div>
+
+          <div class="flexsame">
+            <textarea
+              class="form-textarea"
+              placeholder="Контакты Legaltech-проекта"
+              v-model="form.contacts"
+            ></textarea>
+            <transition name="fade" appear>
+              <p v-if="errors.contacts" class="error">
+                {{ errors.contacts }}
+              </p>
+            </transition>
+          </div>
+
+          <div class="flexsame">
+            <textarea
+              class="form-textarea"
+              placeholder="Ссылка на Legaltech-проект"
+              v-model="form.link"
+            ></textarea>
+            <transition name="fade" appear>
+              <p v-if="errors.link" class="error">
+                {{ errors.link }}
+              </p>
+            </transition>
+          </div>
+        </div>
+
+        <div class="form">
+          <div class="flexsame">
+            <textarea
+              class="form-textarea big-textarea"
+              placeholder="Описание Legaltech-проекта"
+              v-model="form.description"
+            ></textarea>
+            <transition name="fade" appear>
+              <p v-if="errors.description" class="error">
+                {{ errors.description }}
+              </p>
+            </transition>
+          </div>
+
+          <div class="flexsame">
+            <textarea
+              class="form-textarea big-textarea"
+              placeholder="Дополнительная информация"
+              v-model="form.extras"
+            ></textarea>
+            <transition name="fade" appear>
+              <p v-if="errors.extras" class="error">
+                {{ errors.extras }}
+              </p>
+            </transition>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="form">
-      <div class="flexsame">
-        <p class="form__name">Владелец/разработчик продукта</p>
-        <textarea class="form-textarea" v-model="form.owner"></textarea>
-        <transition name="fade" appear>
-          <p v-if="errors.owner" class="error">
-            {{ errors.owner }}
-          </p>
-        </transition>
-      </div>
-
-      <div class="flexsame">
-        <p class="form__name">Контакты Legaltech-проекта</p>
-        <textarea class="form-textarea" v-model="form.contacts"></textarea>
-        <transition name="fade" appear>
-          <p v-if="errors.contacts" class="error">
-            {{ errors.contacts }}
-          </p>
-        </transition>
-      </div>
-
-      <div class="flexsame">
-        <p class="form__name">Ссылка на Legaltech-проект</p>
-        <textarea class="form-textarea" v-model="form.link"></textarea>
-        <transition name="fade" appear>
-          <p v-if="errors.link" class="error">
-            {{ errors.link }}
-          </p>
-        </transition>
-      </div>
-    </div>
-
-    <div class="form">
-      <div class="flexsame">
-        <p class="form__name">Описание Legaltech-проекта</p>
-        <textarea class="form-textarea big-textarea" v-model="form.description"></textarea>
-        <transition name="fade" appear>
-          <p v-if="errors.description" class="error">
-            {{ errors.description }}
-          </p>
-        </transition>
-      </div>
-
-      <div class="flexsame">
-        <p class="form__name">Дополнительная информация</p>
-        <textarea class="form-textarea big-textarea" v-model="form.extras"></textarea>
-        <transition name="fade" appear>
-          <p v-if="errors.extras" class="error">
-            {{ errors.extras }}
-          </p>
-        </transition>
-      </div>
-    </div>
-
-    <div class="img-btn-wrap">
-      <label class="img-btn-lbl" for="upload-image-btn">{{ labelText }}</label>
-      <input
-        class="img-btn"
-        @change="onFileChange"
-        type="file"
-        accept="image/jpeg, image/png, image/jpg"
-        id="upload-image-btn"
-      />
-      <transition class="img-btn-err" name="fade" appear>
-        <p v-if="errors.imageName" class="error">
-          {{ errors.imageName }}
-        </p>
-      </transition>
-    </div>
-    <button @click.prevent="submit" class="submit">Отправить заявку</button>
+    <button @click.prevent="submit" class="submit">Оставить заявку</button>
   </div>
 </template>
 
@@ -201,8 +223,8 @@ const router = useRouter()
 const form = ref({
   projectName: '',
   editedProjectId: -1,
-  sphere: 0,
-  year: 0,
+  sphere: -1,
+  year: -1,
   owner: '',
   contacts: '',
   link: '',
@@ -225,7 +247,7 @@ const errors = ref({
   imageName: '',
 })
 
-const labelText = ref('Загрузить логотип: jpg, jpeg, png. Не менее 300x300 пикселей')
+const labelText = ref('Загрузить логотип')
 
 const formData = new FormData()
 const onFileChange = (event: Event) => {
@@ -269,7 +291,7 @@ const validateForm = (): boolean => {
   }
 
   if (form.value.editProject) {
-    if (!form.value.editedProjectId) {
+    if (form.value.editedProjectId == -1) {
       errors.value.editedProjectId = 'Это поле обязательно для заполнения'
       isValid = false
     }
@@ -279,11 +301,11 @@ const validateForm = (): boolean => {
       isValid = false
     }
   }
-  if (!form.value.sphere) {
+  if (form.value.sphere == -1) {
     errors.value.sphere = 'Это поле обязательно для заполнения'
     isValid = false
   }
-  if (!form.value.year) {
+  if (form.value.year == -1) {
     errors.value.year = 'Это поле обязательно для заполнения'
     isValid = false
   }
@@ -411,42 +433,67 @@ watch(
 </script>
 
 <style scoped lang="scss">
+.img-form-wrap {
+  display: flex;
+  gap: 30px;
+}
+.form-wrap {
+  flex: 5 5 0;
+}
+.img-btn-wrap {
+  display: flex;
+  flex: 1 1 0;
+  height: 50%;
+  position: relative;
+  justify-content: center;
+}
 .img-btn-err {
   position: absolute;
   bottom: -30px;
 }
-.img-btn-wrap {
-  display: flex;
-  position: relative;
-  justify-content: center;
-}
 .img-btn-lbl {
   display: block;
-  width: fit-content;
-  margin-top: 40px;
-  background-color: #d9d9d9;
-  color: #5574f8;
+  height: 24px;
+  font-size: 21px;
+  width: 100%;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  background-color: #f4f4f8;
+  color: black;
   padding: 10px 20px;
   border-radius: 4px;
-  border-width: 1px;
+  border-width: 2px;
   border-color: #5574f8;
   border-style: solid;
   cursor: pointer;
+  text-align: center;
+
+  &:hover {
+    transition:
+      color 0.3s,
+      background-color 0.3s;
+    background-color: #5574f8;
+    color: white;
+  }
 }
 .img-btn {
   display: none;
 }
 .form-textarea {
   width: 98%;
-  background-color: #d9d9d9;
+  height: 32px;
+  background-color: #ffffff;
   border-radius: 4px;
-  border-width: 1px;
-  border-color: #5574f8;
+  border-width: 2px;
+  border-color: #dadada;
   border-style: solid;
-  height: 48px;
-  font-size: 17px;
-  padding: 5px;
+  font-size: 16px;
+  padding: 13px;
   resize: none;
+
+  &:focus {
+    outline-color: #5573f89c;
+  }
 }
 .big-textarea {
   height: 200px;
@@ -459,26 +506,25 @@ watch(
 .flexsame {
   flex: 1 1 0;
 }
+.select-arrow {
+  appearance: none;
+  background-image: url('@/assets/pictures/select-arrow.svg');
+  background-repeat: no-repeat;
+  background-position-x: 99.5%;
+  background-position-y: 49%;
+}
 .form {
   display: flex;
   flex-wrap: wrap;
   column-gap: 50px;
-
-  &__name {
-    font-size: 20px;
-    margin: 40px 0 20px 0;
-  }
-
-  &__wrap {
-    margin-bottom: 15px;
-  }
+  margin-top: 30px;
 
   &__input {
-    width: 100%;
-    background-color: #d9d9d9;
+    width: 106%;
+    background-color: #ffffff;
     border-radius: 4px;
-    border-width: 1px;
-    border-color: #5574f8;
+    border-width: 2px;
+    border-color: #dadada;
     border-style: solid;
     height: 60px;
     font-size: 17px;
@@ -491,17 +537,19 @@ watch(
 }
 
 .submit {
+  position: relative;
   transition: background-color 0.2s ease-in-out;
   width: 300px;
-  height: 80px;
+  height: 60px;
   background-color: var(--main-color);
-  padding: 15px 30px;
+  padding: 10px 10px;
   border-radius: 4px;
   border-width: 0;
   font-size: 25px;
-  text-decoration: none;
   color: white;
-  margin: 40px 0;
+  margin: 40px auto;
+  left: 50%;
+  translate: -50%;
 
   &:hover {
     background-color: var(--hover-underline-color);
@@ -573,7 +621,6 @@ watch(
   left: 0;
   right: 0;
   top: 0;
-  transition: 0.4s;
   border-radius: 4px;
 
   &::before {

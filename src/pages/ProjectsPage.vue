@@ -201,7 +201,7 @@ function closeModal() {
 .filter {
   background-color: #ffffff;
   border-radius: 4px;
-  border-width: 1px;
+  border-width: 2px;
   border-color: #dadada;
   border-style: solid;
   letter-spacing: 0.05em;
