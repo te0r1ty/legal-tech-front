@@ -1,25 +1,18 @@
 <script setup lang="ts">
-import FooterMain from './components/FooterMain.vue'
-import HeaderMain from './components/HeaderMain.vue'
-import FadeLayout from '@/components/layout/FadeLayout.vue'
-import YandexMetrikaCounter from './components/YandexMetrikaCounter.vue'
+import DesktopVariant from './adaptive/DesktopVariant.vue'
+import MobileVariant from './adaptive/MobileVariant.vue'
+import YandexMetrikaCounter from './components/desktop/YandexMetrikaCounter.vue'
+import { useIsMobile } from './composables/mobileComp'
+
+const isMobile = useIsMobile()
 </script>
 
 <template>
   <div id="page-wrap">
     <YandexMetrikaCounter />
 
-    <HeaderMain />
-
-    <main>
-      <router-view v-slot="{ Component, route }">
-        <FadeLayout>
-          <component :is="Component" :key="route.path" />
-        </FadeLayout>
-      </router-view>
-    </main>
-
-    <FooterMain />
+    <DesktopVariant v-if="!isMobile" />
+    <MobileVariant v-if="isMobile" />
   </div>
 </template>
 
@@ -31,7 +24,6 @@ import YandexMetrikaCounter from './components/YandexMetrikaCounter.vue'
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  min-height: 100vh;
   margin: 0 auto;
   background-color: #f4f4f8;
 }

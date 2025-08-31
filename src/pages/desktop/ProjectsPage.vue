@@ -51,8 +51,8 @@
 </template>
 
 <script setup lang="ts">
-import ModalWindow from '@/components/ModalWindow.vue'
-import ProjectCard from '@/components/ProjectCard.vue'
+import ModalWindow from '@/components/desktop/ModalWindow.vue'
+import ProjectCard from '@/components/desktop/ProjectCard.vue'
 import { categoriesEndPoint, imgEndPoint } from '@/constants/api-links'
 import { useProjectsStore } from '@/stores/projectsStore'
 import type { Prj } from '@/stores/projectsStore'

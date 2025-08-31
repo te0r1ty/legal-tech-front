@@ -57,8 +57,8 @@
 </template>
 
 <script setup lang="ts">
-import MapComponent from '@/components/MapComponent.vue'
-import ModalWindow from '@/components/ModalWindow.vue'
+import MapComponent from '@/components/desktop/MapComponent.vue'
+import ModalWindow from '@/components/desktop/ModalWindow.vue'
 import { useProjectsStore } from '@/stores/projectsStore'
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'

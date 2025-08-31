@@ -7,43 +7,43 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('@/pages/HomePage.vue'),
+      component: () => import('@/pages/desktop/HomePage.vue'),
     },
     {
       path: '/methods',
       name: 'Методология',
-      component: () => import('@/pages/MethodsPage.vue'),
+      component: () => import('@/pages/desktop/MethodsPage.vue'),
     },
     {
       path: '/projects',
       name: 'Проекты',
-      component: () => import('@/pages/ProjectsPage.vue'),
+      component: () => import('@/pages/desktop/ProjectsPage.vue'),
     },
     {
       path: '/offer',
       name: 'Добавить проект',
-      component: () => import('@/pages/project-offer/ProjectOfferPage.vue'),
+      component: () => import('@/pages/desktop/project-offer/ProjectOfferPage.vue'),
     },
     {
       path: '/offer/success',
       name: 'Заявка отправлена',
-      component: () => import('@/pages/project-offer/ProjectOfferSuccessPage.vue'),
+      component: () => import('@/pages/desktop/project-offer/ProjectOfferSuccessPage.vue'),
     },
     {
       path: '/admin',
       name: 'Личный кабинет',
-      component: () => import('@/pages/AdminPage.vue'),
+      component: () => import('@/pages/desktop/AdminPage.vue'),
       beforeEnter: authGuard,
     },
     {
       path: '/cookies',
       name: 'Политика обработки персональных данных',
-      component: () => import('@/pages/CookiesPage.vue'),
+      component: () => import('@/pages/desktop/CookiesPage.vue'),
     },
     {
       path: '/login',
       name: 'Вход',
-      component: () => import('@/pages/LoginPage.vue'),
+      component: () => import('@/pages/desktop/LoginPage.vue'),
     },
   ],
 })
